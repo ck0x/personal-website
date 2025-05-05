@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
 import {
   AnimatedContainer,
@@ -10,24 +10,38 @@ import {
   Heading,
   Section,
   Text,
-} from "@/components/ui-elements"
-import { projects, skillCategories } from "@/lib/data"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, ExternalLink, Github, Linkedin, Mail, Twitter } from "lucide-react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import AnimatedBackground from "@/components/animated-background"
-import FloatingNav from "@/components/floating-nav"
-import { ScrollToTopButton, SmoothScroll, useScrollTo } from "@/components/smooth-scroll"
+} from "@/components/ui-elements";
+import { projects, skillCategories } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowRight,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  Twitter,
+} from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import AnimatedBackground from "@/components/animated-background";
+import FloatingNav from "@/components/floating-nav";
+import {
+  ScrollToTopButton,
+  SmoothScroll,
+  useScrollTo,
+} from "@/components/smooth-scroll";
 
 export default function ModernPage() {
-  const scrollTo = useScrollTo()
+  const scrollTo = useScrollTo();
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault()
-    scrollTo(sectionId)
-  }
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    sectionId: string
+  ) => {
+    e.preventDefault();
+    scrollTo(sectionId);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -44,12 +58,14 @@ export default function ModernPage() {
             <AnimatedContainer className="space-y-8">
               <AnimatedItem>
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                  Software <span className="text-primary">Engineer</span> & Blockchain Enthusiast
+                  Software <span className="text-primary">Engineer</span> &
+                  Blockchain Enthusiast
                 </h1>
               </AnimatedItem>
               <AnimatedItem delay={0.1}>
                 <p className="text-xl text-muted-foreground">
-                  I build decentralized applications and blockchain solutions that bridge the gap between web2 and web3.
+                  I build decentralized applications and blockchain solutions
+                  that bridge the gap between web2 and web3.
                 </p>
               </AnimatedItem>
               <AnimatedItem delay={0.2}>
@@ -58,8 +74,8 @@ export default function ModernPage() {
                     size="lg"
                     className="group"
                     onClick={(e) => {
-                      e.preventDefault()
-                      scrollTo("projects")
+                      e.preventDefault();
+                      scrollTo("projects");
                     }}
                   >
                     View Projects
@@ -69,8 +85,8 @@ export default function ModernPage() {
                     size="lg"
                     variant="outline"
                     onClick={(e) => {
-                      e.preventDefault()
-                      scrollTo("contact")
+                      e.preventDefault();
+                      scrollTo("contact");
                     }}
                   >
                     Get in Touch
@@ -112,7 +128,7 @@ export default function ModernPage() {
                 <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-primary to-purple-600 opacity-75 blur-xl"></div>
                 <div className="relative aspect-square rounded-full bg-gradient-to-br from-background via-background to-background/80 border border-white/10 p-6 flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(to_bottom,transparent,white)]"></div>
-                  <div className="relative text-8xl">👨‍💻</div>
+                  <div className="relative text-8xl">chris0.eth</div>
                   <div className="absolute h-40 w-40 rounded-full bg-primary/20 animate-pulse blur-3xl"></div>
                 </div>
               </div>
@@ -131,21 +147,25 @@ export default function ModernPage() {
             <AnimatedContainer className="space-y-6">
               <AnimatedItem>
                 <Text className="text-lg">
-                  Hi, I'm Chris! I'm a passionate web3 developer with expertise in building decentralized applications,
-                  smart contracts, and blockchain infrastructure.
+                  Hi, I'm Chris! I'm a passionate web3 developer with expertise
+                  in building decentralized applications, smart contracts, and
+                  blockchain infrastructure.
                 </Text>
               </AnimatedItem>
               <AnimatedItem delay={0.1}>
                 <Text className="text-lg">
-                  My journey in web3 began when I discovered the potential of blockchain technology to revolutionize how
-                  we interact with digital systems. Since then, I've been dedicated to creating innovative solutions
-                  that leverage the power of decentralization.
+                  My journey in web3 began when I discovered the potential of
+                  blockchain technology to revolutionize how we interact with
+                  digital systems. Since then, I've been dedicated to creating
+                  innovative solutions that leverage the power of
+                  decentralization.
                 </Text>
               </AnimatedItem>
               <AnimatedItem delay={0.2}>
                 <Text className="text-lg">
-                  When I'm not coding, you can find me exploring new blockchain protocols, participating in hackathons,
-                  or contributing to open-source projects.
+                  When I'm not coding, you can find me exploring new blockchain
+                  protocols, participating in hackathons, or contributing to
+                  open-source projects.
                 </Text>
               </AnimatedItem>
             </AnimatedContainer>
@@ -154,38 +174,56 @@ export default function ModernPage() {
               <h3 className="text-xl font-semibold mb-6">Quick Facts</h3>
               <ul className="space-y-4">
                 <li className="flex items-start">
-                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">🌐</span>
+                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">
+                    🌐
+                  </span>
                   <div>
                     <span className="font-medium">Location</span>
-                    <p className="text-muted-foreground">San Francisco, CA</p>
+                    <p className="text-muted-foreground">Auckland, NZ</p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">🎓</span>
+                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">
+                    🎓
+                  </span>
                   <div>
                     <span className="font-medium">Education</span>
-                    <p className="text-muted-foreground">Computer Science, Stanford University</p>
+                    <p className="text-muted-foreground">
+                      Software Engineering, University of Auckland
+                    </p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">💼</span>
+                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">
+                    💼
+                  </span>
                   <div>
                     <span className="font-medium">Experience</span>
-                    <p className="text-muted-foreground">Previously at Ethereum Foundation</p>
+                    <p className="text-muted-foreground">
+                      Previously at Rocket Lab
+                    </p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">🏆</span>
+                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">
+                    🏆
+                  </span>
                   <div>
                     <span className="font-medium">Achievement</span>
-                    <p className="text-muted-foreground">Winner of ETHGlobal hackathon 2023</p>
+                    <p className="text-muted-foreground">
+                      ETHGlobal Multi Award Winner
+                    </p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">🔭</span>
+                  <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">
+                    🔭
+                  </span>
                   <div>
                     <span className="font-medium">Current Focus</span>
-                    <p className="text-muted-foreground">ZK-rollups and Layer 2 solutions</p>
+                    <p className="text-muted-foreground">
+                      ZK-rollups and Layer 2 solutions
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -204,9 +242,13 @@ export default function ModernPage() {
             </Button>
           </div>
 
-          <AnimatedContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* <AnimatedContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-              <AnimatedItem key={project.id} delay={index * 0.1} className="h-full">
+              <AnimatedItem
+                key={project.id}
+                delay={index * 0.1}
+                className="h-full"
+              >
                 <GlassCard hover="scale" className="h-full flex flex-col">
                   <div className="aspect-video relative bg-muted/30 rounded-lg overflow-hidden mb-4">
                     <img
@@ -219,7 +261,11 @@ export default function ModernPage() {
 
                   <div className="flex flex-wrap gap-2 mb-3">
                     {project.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="secondary" className="bg-primary/10 hover:bg-primary/20">
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="bg-primary/10 hover:bg-primary/20"
+                      >
                         {tag}
                       </Badge>
                     ))}
@@ -230,13 +276,26 @@ export default function ModernPage() {
                     )}
                   </div>
 
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+                  <h3 className="text-xl font-semibold mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    {project.description}
+                  </p>
 
                   <div className="mt-auto flex gap-2">
                     {project.demoUrl && (
-                      <Button variant="outline" size="sm" className="group" asChild>
-                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="group"
+                        asChild
+                      >
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           Demo{" "}
                           <ExternalLink className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </a>
@@ -244,13 +303,22 @@ export default function ModernPage() {
                     )}
                     {project.githubUrl && (
                       <Button variant="outline" size="sm" asChild>
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           Code <Github className="ml-1 h-3 w-3" />
                         </a>
                       </Button>
                     )}
                     {project.detailsUrl && (
-                      <Button variant="default" size="sm" className="ml-auto group" asChild>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="ml-auto group"
+                        asChild
+                      >
                         <Link href={project.detailsUrl}>
                           Details{" "}
                           <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -261,7 +329,7 @@ export default function ModernPage() {
                 </GlassCard>
               </AnimatedItem>
             ))}
-          </AnimatedContainer>
+          </AnimatedContainer> */}
         </Section>
 
         {/* Skills Section */}
@@ -271,12 +339,14 @@ export default function ModernPage() {
             Skills & Technologies
           </Heading>
 
-          <AnimatedContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* <AnimatedContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skillCategories.map((category, index) => (
               <AnimatedItem key={category.name} delay={index * 0.1}>
                 <GlassCard hover="border" className="h-full">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="text-2xl p-2 rounded-lg bg-primary/10">{category.icon}</span>
+                    <span className="text-2xl p-2 rounded-lg bg-primary/10">
+                      {category.icon}
+                    </span>
                     <h3 className="text-xl font-semibold">{category.name}</h3>
                   </div>
 
@@ -294,7 +364,7 @@ export default function ModernPage() {
                 </GlassCard>
               </AnimatedItem>
             ))}
-          </AnimatedContainer>
+          </AnimatedContainer> */}
         </Section>
 
         {/* Contact Section */}
@@ -308,14 +378,15 @@ export default function ModernPage() {
             <AnimatedContainer className="space-y-8">
               <AnimatedItem>
                 <Text className="text-lg">
-                  I'm always open to discussing new projects, opportunities, or partnerships. Feel free to reach out if
-                  you have any questions or just want to say hi!
+                  I'm always open to discussing new projects, opportunities, or
+                  partnerships. Feel free to reach out if you have any questions
+                  or just want to say hi!
                 </Text>
               </AnimatedItem>
 
               <AnimatedItem delay={0.1}>
                 <div className="flex flex-col space-y-6">
-                  <motion.a
+                  {/* <motion.a
                     href="mailto:chris@web3dev.com"
                     className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
                     whileHover={{ x: 5 }}
@@ -329,10 +400,10 @@ export default function ModernPage() {
                         chris@web3dev.com
                       </div>
                     </div>
-                  </motion.a>
+                  </motion.a> */}
 
                   <motion.a
-                    href="https://github.com/chrisweb3"
+                    href="https://github.com/chriskw0n"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
@@ -344,13 +415,13 @@ export default function ModernPage() {
                     <div>
                       <div className="font-medium">GitHub</div>
                       <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-                        github.com/chrisweb3
+                        github.com/chriskw0n
                       </div>
                     </div>
                   </motion.a>
 
                   <motion.a
-                    href="https://twitter.com/chrisweb3"
+                    href="https://twitter.com/ck0x_"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
@@ -362,13 +433,13 @@ export default function ModernPage() {
                     <div>
                       <div className="font-medium">Twitter</div>
                       <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-                        @chrisweb3
+                        @ck0x_
                       </div>
                     </div>
                   </motion.a>
 
                   <motion.a
-                    href="https://linkedin.com/in/chrisweb3"
+                    href="https://linkedin.com/in/chris-kwon-16aa19172"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
@@ -380,7 +451,7 @@ export default function ModernPage() {
                     <div>
                       <div className="font-medium">LinkedIn</div>
                       <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-                        linkedin.com/in/chrisweb3
+                        linkedin.com/in/chris-kwon
                       </div>
                     </div>
                   </motion.a>
@@ -388,7 +459,7 @@ export default function ModernPage() {
               </AnimatedItem>
             </AnimatedContainer>
 
-            <AnimatedItem direction="left">
+            {/* <AnimatedItem direction="left">
               <GlassCard hover="glow" className="h-full">
                 <form className="space-y-4">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -441,7 +512,7 @@ export default function ModernPage() {
                   </Button>
                 </form>
               </GlassCard>
-            </AnimatedItem>
+            </AnimatedItem> */}
           </div>
         </Section>
       </main>
@@ -450,7 +521,9 @@ export default function ModernPage() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-muted-foreground">© {new Date().getFullYear()} Chris. All rights reserved.</p>
+              <p className="text-muted-foreground">
+                © {new Date().getFullYear()} Chris. All rights reserved.
+              </p>
             </div>
             <div className="flex space-x-4">
               <a
@@ -485,5 +558,5 @@ export default function ModernPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
