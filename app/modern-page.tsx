@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import { useState } from "react";
 
 import {
   AnimatedContainer,
@@ -34,6 +34,11 @@ import {
 
 export default function ModernPage() {
   const scrollTo = useScrollTo();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<{
+    type: "" | "success" | "error";
+    message: string;
+  }>({ type: "", message: "" });
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -41,6 +46,50 @@ export default function ModernPage() {
   ) => {
     e.preventDefault();
     scrollTo(sectionId);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFormStatus({ type: "", message: "" });
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+      recipient: "chriskwon0@gmail.com",
+    };
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok)
+        throw new Error(result.message || "Failed to send message");
+
+      setFormStatus({
+        type: "success",
+        message: "Message sent! I'll get back to you as soon as possible.",
+      });
+
+      // Reset the form
+      e.currentTarget.reset();
+    } catch (error: any) {
+      setFormStatus({
+        type: "error",
+        message:
+          error.message || "Something went wrong. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -461,7 +510,7 @@ export default function ModernPage() {
 
             <AnimatedItem direction="left">
               <GlassCard hover="glow" className="h-full">
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium">
@@ -469,8 +518,10 @@ export default function ModernPage() {
                       </label>
                       <input
                         id="name"
+                        name="name"
                         className="w-full px-3 py-2 bg-background/50 border border-border rounded-md text-sm focus:border-primary/50 focus:ring focus:ring-primary/20 transition-all"
                         placeholder="Your name"
+                        required
                       />
                     </div>
                     <div className="space-y-2">
@@ -479,9 +530,11 @@ export default function ModernPage() {
                       </label>
                       <input
                         id="email"
+                        name="email"
                         type="email"
                         className="w-full px-3 py-2 bg-background/50 border border-border rounded-md text-sm focus:border-primary/50 focus:ring focus:ring-primary/20 transition-all"
                         placeholder="Your email"
+                        required
                       />
                     </div>
                   </div>
@@ -491,8 +544,10 @@ export default function ModernPage() {
                     </label>
                     <input
                       id="subject"
+                      name="subject"
                       className="w-full px-3 py-2 bg-background/50 border border-border rounded-md text-sm focus:border-primary/50 focus:ring focus:ring-primary/20 transition-all"
                       placeholder="Subject"
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -501,14 +556,39 @@ export default function ModernPage() {
                     </label>
                     <textarea
                       id="message"
+                      name="message"
                       rows={4}
                       className="w-full px-3 py-2 bg-background/50 border border-border rounded-md text-sm resize-none focus:border-primary/50 focus:ring focus:ring-primary/20 transition-all"
                       placeholder="Your message"
+                      required
                     />
                   </div>
-                  <Button type="submit" className="w-full group">
-                    Send Message
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+
+                  {formStatus.type && (
+                    <div
+                      className={`p-3 rounded-md ${
+                        formStatus.type === "success"
+                          ? "bg-green-500/10 text-green-500"
+                          : "bg-red-500/10 text-red-500"
+                      }`}
+                    >
+                      {formStatus.message}
+                    </div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    className="w-full group"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>Sending...</>
+                    ) : (
+                      <>
+                        Send Message
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </>
+                    )}
                   </Button>
                 </form>
               </GlassCard>
