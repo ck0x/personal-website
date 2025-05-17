@@ -50,10 +50,11 @@ export default function ModernPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget; // Store a reference to the form
     setIsSubmitting(true);
     setFormStatus({ type: "", message: "" });
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form); // Use the stored reference
     const data = {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
@@ -79,8 +80,8 @@ export default function ModernPage() {
         message: "Message sent! I'll get back to you as soon as possible.",
       });
 
-      // Reset the form
-      e.currentTarget.reset();
+      // Reset the form using the stored reference
+      form.reset();
     } catch (error: any) {
       setFormStatus({
         type: "error",
