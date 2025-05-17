@@ -242,7 +242,7 @@ export default function ModernPage() {
             </Button>
           </div>
 
-          {/* <AnimatedContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatedContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
               <AnimatedItem
                 key={project.id}
@@ -329,7 +329,7 @@ export default function ModernPage() {
                 </GlassCard>
               </AnimatedItem>
             ))}
-          </AnimatedContainer> */}
+          </AnimatedContainer>
         </Section>
 
         {/* Skills Section */}
@@ -339,7 +339,7 @@ export default function ModernPage() {
             Skills & Technologies
           </Heading>
 
-          {/* <AnimatedContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatedContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skillCategories.map((category, index) => (
               <AnimatedItem key={category.name} delay={index * 0.1}>
                 <GlassCard hover="border" className="h-full">
@@ -364,7 +364,7 @@ export default function ModernPage() {
                 </GlassCard>
               </AnimatedItem>
             ))}
-          </AnimatedContainer> */}
+          </AnimatedContainer>
         </Section>
 
         {/* Contact Section */}
@@ -386,7 +386,7 @@ export default function ModernPage() {
 
               <AnimatedItem delay={0.1}>
                 <div className="flex flex-col space-y-6">
-                  {/* <motion.a
+                  <motion.a
                     href="mailto:chris@web3dev.com"
                     className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
                     whileHover={{ x: 5 }}
@@ -400,7 +400,7 @@ export default function ModernPage() {
                         chris@web3dev.com
                       </div>
                     </div>
-                  </motion.a> */}
+                  </motion.a>
 
                   <motion.a
                     href="https://github.com/chriskw0n"
@@ -459,7 +459,7 @@ export default function ModernPage() {
               </AnimatedItem>
             </AnimatedContainer>
 
-            {/* <AnimatedItem direction="left">
+            <AnimatedItem direction="left">
               <GlassCard hover="glow" className="h-full">
                 <form className="space-y-4">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -512,7 +512,7 @@ export default function ModernPage() {
                   </Button>
                 </form>
               </GlassCard>
-            </AnimatedItem> */}
+            </AnimatedItem>
           </div>
         </Section>
       </main>
