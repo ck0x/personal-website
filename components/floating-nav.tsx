@@ -83,11 +83,6 @@ export default function FloatingNav() {
       href: "https://www.linkedin.com/in/chris-kwon-16aa19172",
       label: "LinkedIn",
     },
-    {
-      icon: <Mail className="h-4 w-4" />,
-      href: "mailto:chriskwon0@gmail.com",
-      label: "Email",
-    },
   ];
 
   return (

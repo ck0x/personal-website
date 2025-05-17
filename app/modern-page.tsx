@@ -437,22 +437,6 @@ export default function ModernPage() {
               <AnimatedItem delay={0.1}>
                 <div className="flex flex-col space-y-6">
                   <motion.a
-                    href="mailto:chris@web3dev.com"
-                    className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
-                    whileHover={{ x: 5 }}
-                  >
-                    <span className="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
-                      <Mail className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <div className="font-medium">Email</div>
-                      <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-                        chris@web3dev.com
-                      </div>
-                    </div>
-                  </motion.a>
-
-                  <motion.a
                     href="https://github.com/chriskw0n"
                     target="_blank"
                     rel="noopener noreferrer"
