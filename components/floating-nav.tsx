@@ -1,75 +1,94 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { cn } from "@/lib/utils"
-import { motion, useScroll } from "framer-motion"
-import { Github, Linkedin, Mail, Twitter } from "lucide-react"
-import { useEffect, useState } from "react"
-import { ThemeToggle } from "./theme-toggle"
-import { useScrollTo } from "./smooth-scroll"
+import { cn } from "@/lib/utils";
+import { motion, useScroll } from "framer-motion";
+import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ThemeToggle } from "./theme-toggle";
+import { useScrollTo } from "./smooth-scroll";
 
 export default function FloatingNav() {
-  const [activeSection, setActiveSection] = useState<string>("home")
-  const [isScrolled, setIsScrolled] = useState(false)
-  const { scrollY } = useScroll()
-  const scrollTo = useScrollTo()
+  const [activeSection, setActiveSection] = useState<string>("home");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const scrollTo = useScrollTo();
 
   // Update scroll state
   useEffect(() => {
     const updateScrollState = () => {
-      setIsScrolled(scrollY.get() > 50)
-    }
+      setIsScrolled(scrollY.get() > 50);
+    };
 
-    const unsubscribe = scrollY.onChange(updateScrollState)
-    updateScrollState()
+    const unsubscribe = scrollY.onChange(updateScrollState);
+    updateScrollState();
 
-    return () => unsubscribe()
-  }, [scrollY])
+    return () => unsubscribe();
+  }, [scrollY]);
 
   // Update active section based on scroll position
   useEffect(() => {
-    const sections = ["home", "about", "projects", "skills", "contact"]
+    const sections = ["home", "about", "projects", "skills", "contact"];
 
     const handleScroll = () => {
-      const pageYOffset = window.scrollY
-      let newActiveSection = sections[0]
+      const pageYOffset = window.scrollY;
+      let newActiveSection = sections[0];
 
       sections.forEach((sectionId) => {
-        const element = document.getElementById(sectionId)
-        if (!element) return
+        const element = document.getElementById(sectionId);
+        if (!element) return;
 
-        const offsetTop = element.offsetTop - 100
+        const offsetTop = element.offsetTop - 100;
         if (pageYOffset >= offsetTop) {
-          newActiveSection = sectionId
+          newActiveSection = sectionId;
         }
-      })
+      });
 
-      setActiveSection(newActiveSection)
-    }
+      setActiveSection(newActiveSection);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault()
-    scrollTo(sectionId)
-  }
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    sectionId: string
+  ) => {
+    e.preventDefault();
+    scrollTo(sectionId);
+  };
 
   const navItems = [
     { name: "About", href: "#about", id: "about" },
     { name: "Projects", href: "#projects", id: "projects" },
     { name: "Skills", href: "#skills", id: "skills" },
     { name: "Contact", href: "#contact", id: "contact" },
-  ]
+  ];
 
   const socialLinks = [
-    { icon: <Github className="h-4 w-4" />, href: "https://github.com/chrisweb3", label: "GitHub" },
-    { icon: <Twitter className="h-4 w-4" />, href: "https://twitter.com/chrisweb3", label: "Twitter" },
-    { icon: <Linkedin className="h-4 w-4" />, href: "https://linkedin.com/in/chrisweb3", label: "LinkedIn" },
-    { icon: <Mail className="h-4 w-4" />, href: "mailto:chris@web3dev.com", label: "Email" },
-  ]
+    {
+      icon: <Github className="h-4 w-4" />,
+      href: "https://github.com/ChrisKw0n",
+      label: "GitHub",
+    },
+    {
+      icon: <Twitter className="h-4 w-4" />,
+      href: "https://x.com/ck0x_",
+      label: "Twitter",
+    },
+    {
+      icon: <Linkedin className="h-4 w-4" />,
+      href: "https://www.linkedin.com/in/chris-kwon-16aa19172",
+      label: "LinkedIn",
+    },
+    {
+      icon: <Mail className="h-4 w-4" />,
+      href: "mailto:chriskwon0@gmail.com",
+      label: "Email",
+    },
+  ];
 
   return (
     <>
@@ -81,7 +100,7 @@ export default function FloatingNav() {
         className={cn(
           "fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center justify-center",
           "px-1.5 py-1.5 rounded-full backdrop-blur-md border border-border",
-          isScrolled ? "bg-background/80 shadow-lg" : "bg-background/50",
+          isScrolled ? "bg-background/80 shadow-lg" : "bg-background/50"
         )}
       >
         <div className="flex items-center gap-1">
@@ -90,7 +109,9 @@ export default function FloatingNav() {
             onClick={(e) => handleNavClick(e, "home")}
             className={cn(
               "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-              activeSection === "home" ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              activeSection === "home"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted"
             )}
           >
             Home
@@ -103,7 +124,9 @@ export default function FloatingNav() {
               onClick={(e) => handleNavClick(e, item.id)}
               className={cn(
                 "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-                activeSection === item.id ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+                activeSection === item.id
+                  ? "bg-primary text-primary-foreground"
+                  : "hover:bg-muted"
               )}
             >
               {item.name}
@@ -139,7 +162,7 @@ export default function FloatingNav() {
         className={cn(
           "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden",
           "px-1.5 py-1.5 rounded-full backdrop-blur-md border border-border shadow-lg",
-          "bg-background/80",
+          "bg-background/80"
         )}
       >
         <div className="flex items-center gap-1">
@@ -148,7 +171,9 @@ export default function FloatingNav() {
             onClick={(e) => handleNavClick(e, "home")}
             className={cn(
               "p-2 rounded-full transition-colors",
-              activeSection === "home" ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              activeSection === "home"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted"
             )}
           >
             <svg
@@ -172,7 +197,9 @@ export default function FloatingNav() {
             onClick={(e) => handleNavClick(e, "about")}
             className={cn(
               "p-2 rounded-full transition-colors",
-              activeSection === "about" ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              activeSection === "about"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted"
             )}
           >
             <svg
@@ -197,7 +224,9 @@ export default function FloatingNav() {
             onClick={(e) => handleNavClick(e, "projects")}
             className={cn(
               "p-2 rounded-full transition-colors",
-              activeSection === "projects" ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              activeSection === "projects"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted"
             )}
           >
             <svg
@@ -231,7 +260,9 @@ export default function FloatingNav() {
             onClick={(e) => handleNavClick(e, "skills")}
             className={cn(
               "p-2 rounded-full transition-colors",
-              activeSection === "skills" ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              activeSection === "skills"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted"
             )}
           >
             <svg
@@ -259,7 +290,9 @@ export default function FloatingNav() {
             onClick={(e) => handleNavClick(e, "contact")}
             className={cn(
               "p-2 rounded-full transition-colors",
-              activeSection === "contact" ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              activeSection === "contact"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted"
             )}
           >
             <svg
@@ -283,5 +316,5 @@ export default function FloatingNav() {
         </div>
       </motion.div>
     </>
-  )
+  );
 }

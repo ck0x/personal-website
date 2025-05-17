@@ -146,7 +146,7 @@ export default function ModernPage() {
               <AnimatedItem delay={0.3}>
                 <div className="flex gap-4 pt-4">
                   <a
-                    href="https://github.com/chrisweb3"
+                    href="https://github.com/ChrisKw0n"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-background/50 border border-border hover:border-primary/50 hover:text-primary transition-all"
@@ -154,7 +154,7 @@ export default function ModernPage() {
                     <Github className="h-5 w-5" />
                   </a>
                   <a
-                    href="https://twitter.com/chrisweb3"
+                    href="https://x.com/ck0x_"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-background/50 border border-border hover:border-primary/50 hover:text-primary transition-all"
@@ -162,7 +162,7 @@ export default function ModernPage() {
                     <Twitter className="h-5 w-5" />
                   </a>
                   <a
-                    href="https://linkedin.com/in/chrisweb3"
+                    href="https://www.linkedin.com/in/chris-kwon-16aa19172"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-background/50 border border-border hover:border-primary/50 hover:text-primary transition-all"
@@ -608,7 +608,7 @@ export default function ModernPage() {
             </div>
             <div className="flex space-x-4">
               <a
-                href="https://github.com/chrisweb3"
+                href="https://github.com/ChrisKw0n"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
@@ -617,7 +617,7 @@ export default function ModernPage() {
                 <Github className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
               </a>
               <a
-                href="https://twitter.com/chrisweb3"
+                href="https://x.com/ck0x_"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
@@ -626,7 +626,7 @@ export default function ModernPage() {
                 <Twitter className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
               </a>
               <a
-                href="https://linkedin.com/in/chrisweb3"
+                href="https://www.linkedin.com/in/chris-kwon-16aa19172"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
