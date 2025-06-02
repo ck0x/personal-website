@@ -89,7 +89,60 @@ export const projects: Project[] = [
       "Persistent chat history and message voting via PostgreSQL",
       "Personalized conversational blockchain experience",
     ],
-    githubUrl: "https://github.com/myanzik/eth-talk",
+    githubUrl: "https://github.com/sean-stanley/eth-talk",
+  },
+
+  {
+    id: "fintrack",
+    title: "FinTrack",
+    description:
+      "A comprehensive financial management platform for individuals and businesses to track income, expenses, budgets, and financial goals, featuring intuitive data visualisation, forecasting, and seamless deployment via Render.",
+    image: "/images/fintrack.png?height=400&width=600",
+    tags: ["Vaadin", "Spring Boot", "Java", "CSS", "Maven", "Render"],
+    highlights: [
+      "Income, expense, and budget tracking",
+      "Financial goal-setting and forecasting",
+      "User-friendly data visualisation dashboard",
+      "Personal and business profile management",
+      "Automated deployment via Render",
+      "Supports .env configuration for secure DB access",
+      "Built with Java, Spring Boot, and Vaadin",
+      "Live rebuilds on merge to main",
+      "Centralized financial health insights",
+      "Accessible via http://localhost:8080 or Render-hosted",
+    ],
+    githubUrl: "https://github.com/ChrisKw0n/FinTrack/tree/main",
+  },
+
+  {
+    id: "web3-hackathon-foundry",
+    title: "Web3 Hackathon Foundry Quick Start",
+    description:
+      "A template project to jumpstart Ethereum smart contract development with Foundry. Includes a simple guessing game contract that pays out test ETH to winners, complete with automated tests and deployment scripts.",
+    image: "/images/web3-foundry.png?height=400&width=600",
+    tags: [
+      "Solidity",
+      "Foundry",
+      "Ethereum",
+      "Smart Contracts",
+      "Forge",
+      "Cast",
+      "Anvil",
+      "Rust",
+    ],
+    highlights: [
+      "Simple smart contract guessing game with ETH payouts",
+      "Automated testing with Forge",
+      "Deployment script for local and Sepolia testnet",
+      "Step-by-step guide for environment setup (.env with RPC and private key)",
+      "Usage of Cast CLI for contract interaction",
+      "Includes local Ethereum node (Anvil) for testing",
+      "Demonstrates core Foundry tools (Forge, Cast, Anvil, Chisel)",
+      "Security reminder on handling private keys",
+      "Perfect for Web3 hackathon beginners",
+      "Expandable template for custom Web3 projects",
+    ],
+    githubUrl: "https://github.com/ChrisKw0n/web3-workshop-WDCCxUOABC-foundry",
   },
 ];
 
