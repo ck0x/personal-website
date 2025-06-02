@@ -28,6 +28,38 @@ export const projects: Project[] = [
 
     githubUrl: "https://github.com/ChrisKw0n/agentic-dao-visier",
   },
+
+  {
+    id: "relief-link",
+    title: "Relief Link",
+    description:
+      "An automated disaster relief platform that delivers immediate financial aid using blockchain, real-time disaster data, identity verification, and fiat onramps to ensure secure and efficient support for verified users in affected regions.",
+    image: "/images/relief-link.png?height=400&width=600",
+    tags: [
+      "Chainlink",
+      "Worldcoin",
+      "Unlimit",
+      "Thirdweb",
+      "Next.js",
+      "PredictHQ",
+      "Base",
+      "Solidity",
+    ],
+    highlights: [
+      "Real-time disaster-triggered aid distribution",
+      "Chainlink Oracle automation",
+      "Worldcoin-based personhood verification",
+      "Fiat onramp via Unlimit and Account Abstraction",
+      "Impact tracking using PredictHQ API",
+      "Disaster trend visualization",
+      "Optimized API payloads for lower gas fees",
+      "Smart contract deployment on Base Sepolia",
+      "Monorepo for full-stack development",
+      "Seamless onboarding for non-crypto users",
+    ],
+
+    githubUrl: "https://github.com/myanzik/relief-link",
+  },
 ];
 
 export const skillCategories: SkillCategory[] = [
