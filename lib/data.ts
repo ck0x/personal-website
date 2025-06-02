@@ -60,6 +60,37 @@ export const projects: Project[] = [
 
     githubUrl: "https://github.com/myanzik/relief-link",
   },
+
+  {
+    id: "eth-talk",
+    title: "Eth Talk",
+    description:
+      "An AI-powered voice chatbot that simplifies Ethereum smart wallet management through natural language commands, enabling users to check balances, send funds, mint ENS names, and more via an intuitive interface and OMI voice device integration.",
+    image: "/images/ethtalk.png?height=400&width=600",
+    tags: [
+      "Next.js",
+      "Langchain",
+      "AgentKit",
+      "Coinbase Developer Platform",
+      "OMI",
+      "Base Sepolia",
+      "Python",
+      "PostgreSQL",
+    ],
+    highlights: [
+      "Voice-controlled Ethereum smart wallet assistant",
+      "Natural language command processing via Langchain",
+      "OMI integration for audio command transcription",
+      "Real-time wallet actions like balance checks and fund transfers",
+      "ENS name minting for wallets and AI agents",
+      "ERC-20 and NFT contract deployment using AgentKit",
+      "Multi-network support with Base Sepolia default",
+      "Secure spend-control via expiring contracts",
+      "Persistent chat history and message voting via PostgreSQL",
+      "Personalized conversational blockchain experience",
+    ],
+    githubUrl: "https://github.com/myanzik/eth-talk",
+  },
 ];
 
 export const skillCategories: SkillCategory[] = [
