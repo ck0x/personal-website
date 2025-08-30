@@ -146,7 +146,7 @@ export default function ModernPage() {
               <AnimatedItem delay={0.3}>
                 <div className="flex gap-4 pt-4">
                   <a
-                    href="https://github.com/ChrisKw0n"
+                    href="https://github.com/ck0x"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-background/50 border border-border hover:border-primary/50 hover:text-primary transition-all"
@@ -437,7 +437,7 @@ export default function ModernPage() {
               <AnimatedItem delay={0.1}>
                 <div className="flex flex-col space-y-6">
                   <motion.a
-                    href="https://github.com/chriskw0n"
+                    href="https://github.com/ck0x"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border hover:border-primary/50 transition-all group"
@@ -449,7 +449,7 @@ export default function ModernPage() {
                     <div>
                       <div className="font-medium">GitHub</div>
                       <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-                        github.com/chriskw0n
+                        github.com/ck0x
                       </div>
                     </div>
                   </motion.a>
@@ -592,7 +592,7 @@ export default function ModernPage() {
             </div>
             <div className="flex space-x-4">
               <a
-                href="https://github.com/ChrisKw0n"
+                href="https://github.com/ck0x"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"

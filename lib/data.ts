@@ -26,7 +26,7 @@ export const projects: Project[] = [
       "Secure data storage",
     ],
 
-    githubUrl: "https://github.com/ChrisKw0n/agentic-dao-visier",
+    githubUrl: "https://github.com/ck0x/agentic-dao-visier",
   },
 
   {
@@ -111,7 +111,7 @@ export const projects: Project[] = [
       "Centralized financial health insights",
       "Accessible via http://localhost:8080 or Render-hosted",
     ],
-    githubUrl: "https://github.com/ChrisKw0n/FinTrack/tree/main",
+    githubUrl: "https://github.com/ck0x/FinTrack/tree/main",
   },
 
   {
@@ -142,7 +142,7 @@ export const projects: Project[] = [
       "Perfect for Web3 hackathon beginners",
       "Expandable template for custom Web3 projects",
     ],
-    githubUrl: "https://github.com/ChrisKw0n/web3-workshop-WDCCxUOABC-foundry",
+    githubUrl: "https://github.com/ck0x/web3-workshop-WDCCxUOABC-foundry",
   },
 ];
 

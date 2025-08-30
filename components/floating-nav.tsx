@@ -70,7 +70,7 @@ export default function FloatingNav() {
   const socialLinks = [
     {
       icon: <Github className="h-4 w-4" />,
-      href: "https://github.com/ChrisKw0n",
+      href: "https://github.com/ck0x",
       label: "GitHub",
     },
     {
