@@ -107,9 +107,11 @@ export default function ModernPage() {
           <div className="grid gap-12 md:grid-cols-2 items-center">
             <AnimatedContainer className="space-y-8">
               <AnimatedItem>
-                <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                  Software <span className="text-primary">Engineer</span> &
-                  Blockchain Enthusiast
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight tracking-tight">
+                  <span className="block">
+                    Software <span className="text-primary">Engineer</span>
+                  </span>
+                  <span className="block">& Blockchain Enthusiast</span>
                 </h1>
               </AnimatedItem>
               <AnimatedItem delay={0.1}>
@@ -178,7 +180,9 @@ export default function ModernPage() {
                 <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-primary to-purple-600 opacity-75 blur-xl"></div>
                 <div className="relative aspect-square rounded-full bg-gradient-to-br from-background via-background to-background/80 border border-white/10 p-6 flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(to_bottom,transparent,white)]"></div>
-                  <div className="relative text-8xl">chris0.eth</div>
+                  <div className="relative text-5xl sm:text-6xl md:text-8xl break-all md:break-normal leading-none select-none">
+                    chris0.eth
+                  </div>
                   <div className="absolute h-40 w-40 rounded-full bg-primary/20 animate-pulse blur-3xl"></div>
                 </div>
               </div>
@@ -222,7 +226,7 @@ export default function ModernPage() {
 
             <GlassCard variant="default" hover="glow" className="h-full">
               <h3 className="text-xl font-semibold mb-6">Quick Facts</h3>
-              <ul className="space-y-4">
+              <ul className="space-y-4 sm:space-y-5">
                 <li className="flex items-start">
                   <span className="mr-3 p-2 rounded-full bg-primary/10 text-primary">
                     🌐
@@ -292,7 +296,7 @@ export default function ModernPage() {
             </Button>
           </div>
 
-          <AnimatedContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatedContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {projects.map((project, index) => (
               <AnimatedItem
                 key={project.id}
@@ -389,7 +393,7 @@ export default function ModernPage() {
             Skills & Technologies
           </Heading>
 
-          <AnimatedContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatedContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {skillCategories.map((category, index) => (
               <AnimatedItem key={category.name} delay={index * 0.1}>
                 <GlassCard hover="border" className="h-full">
@@ -496,7 +500,7 @@ export default function ModernPage() {
             <AnimatedItem direction="left">
               <GlassCard hover="glow" className="h-full">
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium">
                         Name

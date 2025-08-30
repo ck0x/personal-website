@@ -61,10 +61,20 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("py-16 md:py-24 relative overflow-hidden", className)}
+      className={cn(
+        // Reduced base vertical spacing for mobile; scale up progressively
+        "py-12 sm:py-16 md:py-24 relative overflow-hidden",
+        className
+      )}
       {...props}
     >
-      <div className={cn("container relative z-10", innerClassName)}>
+      <div
+        className={cn(
+          // Add explicit horizontal padding for very small screens to avoid cramped layout
+          "container px-4 sm:px-6 md:px-8 relative z-10",
+          innerClassName
+        )}
+      >
         {children}
       </div>
     </section>
