@@ -18,6 +18,11 @@ export default function Home() {
   const touchStartX = useRef(0);
   const shaderContainerRef = useRef<HTMLDivElement>(null);
   const scrollThrottleRef = useRef<number | undefined>(undefined);
+  const targetScrollRef = useRef(0);
+  const currentScrollRef = useRef(0);
+  const isScrollingRef = useRef(false);
+  const velocityRef = useRef(0);
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const checkShaderReady = () => {
@@ -52,10 +57,32 @@ export default function Home() {
   const scrollToSection = (index: number) => {
     if (scrollContainerRef.current) {
       const sectionWidth = scrollContainerRef.current.offsetWidth;
-      scrollContainerRef.current.scrollTo({
-        left: sectionWidth * index,
-        behavior: "smooth",
-      });
+      targetScrollRef.current = sectionWidth * index;
+
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true;
+        currentScrollRef.current = scrollContainerRef.current.scrollLeft;
+
+        const smoothScroll = () => {
+          if (!scrollContainerRef.current) return;
+
+          const ease = 0.08; // Match the slow, smooth feel
+          const diff = targetScrollRef.current - currentScrollRef.current;
+
+          if (Math.abs(diff) > 0.5) {
+            currentScrollRef.current += diff * ease;
+            scrollContainerRef.current.scrollLeft = currentScrollRef.current;
+            animationFrameRef.current = requestAnimationFrame(smoothScroll);
+          } else {
+            currentScrollRef.current = targetScrollRef.current;
+            scrollContainerRef.current.scrollLeft = currentScrollRef.current;
+            isScrollingRef.current = false;
+          }
+        };
+
+        animationFrameRef.current = requestAnimationFrame(smoothScroll);
+      }
+
       setCurrentSection(index);
     }
   };
@@ -107,39 +134,68 @@ export default function Home() {
     };
   }, [currentSection]);
 
+  // Smooth momentum-based scrolling
   useEffect(() => {
+    let rafId: number | undefined;
+
+    const smoothScroll = () => {
+      if (!scrollContainerRef.current) return;
+
+      const ease = 0.08; // Lower = smoother, more gradual
+      const diff = targetScrollRef.current - currentScrollRef.current;
+
+      if (Math.abs(diff) > 0.5) {
+        currentScrollRef.current += diff * ease;
+        scrollContainerRef.current.scrollLeft = currentScrollRef.current;
+        rafId = requestAnimationFrame(smoothScroll);
+      } else {
+        currentScrollRef.current = targetScrollRef.current;
+        scrollContainerRef.current.scrollLeft = currentScrollRef.current;
+        isScrollingRef.current = false;
+      }
+    };
+
     const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
+      e.preventDefault();
 
-        if (!scrollContainerRef.current) return;
+      if (!scrollContainerRef.current) return;
 
-        scrollContainerRef.current.scrollBy({
-          left: e.deltaY,
-          behavior: "instant",
-        });
+      const delta = e.deltaY || e.deltaX;
+      const maxScroll =
+        scrollContainerRef.current.scrollWidth -
+        scrollContainerRef.current.clientWidth;
 
-        const sectionWidth = scrollContainerRef.current.offsetWidth;
-        const newSection = Math.round(
-          scrollContainerRef.current.scrollLeft / sectionWidth
-        );
-        if (newSection !== currentSection) {
-          setCurrentSection(newSection);
-        }
+      // Slow, smooth scrolling with reduced multiplier
+      targetScrollRef.current += delta * 0.8; // Lower = slower scroll
+      targetScrollRef.current = Math.max(
+        0,
+        Math.min(targetScrollRef.current, maxScroll)
+      );
+
+      // Start animation if not running
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true;
+        currentScrollRef.current = scrollContainerRef.current.scrollLeft;
+        rafId = requestAnimationFrame(smoothScroll);
       }
     };
 
     const container = scrollContainerRef.current;
     if (container) {
       container.addEventListener("wheel", handleWheel, { passive: false });
+      currentScrollRef.current = container.scrollLeft;
+      targetScrollRef.current = container.scrollLeft;
     }
 
     return () => {
       if (container) {
         container.removeEventListener("wheel", handleWheel);
       }
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
     };
-  }, [currentSection]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

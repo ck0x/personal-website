@@ -126,11 +126,12 @@
   }
 
   [data-scroll-container] {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-overflow-scrolling: touch;
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
+    overscroll-behavior: none;
   }
 
   section {
