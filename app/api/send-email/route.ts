@@ -13,6 +13,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check if email credentials are configured
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+      return NextResponse.json(
+        {
+          message:
+            "Email service not configured. Please contact directly at chriskwon0@gmail.com",
+        },
+        { status: 503 }
+      );
+    }
+
     // Set up email transport
     const transporter = nodemailer.createTransport({
       service: "gmail",
