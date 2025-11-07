@@ -1,45 +1,31 @@
-import type React from "react";
-import "@/app/globals.css";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { cn } from "@/lib/utils";
+import type React from "next";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Chris - Web3 Developer Portfolio",
   description:
     "Personal portfolio of Chris, a web3 developer and blockchain enthusiast",
-  generator: "v0.dev",
+  generator: "v0.app",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,maximum-scale=1"
-        />
-      </head>
+    <html lang="en">
       <body
-        className={cn(
-          inter.className,
-          "antialiased min-h-screen theme-transition"
-        )}
+        className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          {children}
-        </ThemeProvider>
+        {children}
+        <Analytics />
       </body>
     </html>
   );
