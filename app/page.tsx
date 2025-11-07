@@ -66,7 +66,7 @@ export default function Home() {
         const smoothScroll = () => {
           if (!scrollContainerRef.current) return;
 
-          const ease = 0.08; // Match the slow, smooth feel
+          const ease = 0.04;
           const diff = targetScrollRef.current - currentScrollRef.current;
 
           if (Math.abs(diff) > 0.5) {
