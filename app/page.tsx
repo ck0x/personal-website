@@ -196,8 +196,8 @@ export default function Home() {
       >
         <Shader className="h-full w-full">
           <Swirl
-            colorA="#1275d8"
-            colorB="#e19136"
+            colorA="#ffffff"
+            colorB="#ff8c42"
             speed={0.8}
             detail={0.8}
             blend={50}
@@ -209,11 +209,11 @@ export default function Home() {
             fineY={40}
           />
           <ChromaFlow
-            baseColor="#0066ff"
-            upColor="#0066ff"
-            downColor="#d1d1d1"
-            leftColor="#e19136"
-            rightColor="#e19136"
+            baseColor="#ff8c42"
+            upColor="#ff8c42"
+            downColor="#ffffff"
+            leftColor="#ffb380"
+            rightColor="#ff6b1a"
             intensity={0.9}
             radius={1.8}
             momentum={25}
@@ -221,7 +221,7 @@ export default function Home() {
             opacity={0.97}
           />
         </Shader>
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-white/30" />
       </div>
 
       <nav

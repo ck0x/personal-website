@@ -62,17 +62,17 @@ export function CustomCursor() {
     <>
       <div
         ref={outerRef}
-        className="pointer-events-none fixed left-0 top-0 z-50 mix-blend-difference will-change-transform"
+        className="pointer-events-none fixed left-0 top-0 z-50 will-change-transform"
         style={{ contain: "layout style paint" }}
       >
-        <div className="h-4 w-4 rounded-full border-2 border-white" />
+        <div className="h-4 w-4 rounded-full border-2 border-orange-500" />
       </div>
       <div
         ref={innerRef}
-        className="pointer-events-none fixed left-0 top-0 z-50 mix-blend-difference will-change-transform"
+        className="pointer-events-none fixed left-0 top-0 z-50 will-change-transform"
         style={{ contain: "layout style paint" }}
       >
-        <div className="h-2 w-2 rounded-full bg-white" />
+        <div className="h-2 w-2 rounded-full bg-orange-500" />
       </div>
     </>
   );
