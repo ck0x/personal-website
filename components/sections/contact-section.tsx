@@ -14,6 +14,7 @@ export function ContactSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,6 +25,7 @@ export function ContactSection() {
     }
 
     setIsSubmitting(true);
+    setSubmitError("");
 
     try {
       const response = await fetch("/api/send-email", {
@@ -38,8 +40,9 @@ export function ContactSection() {
 
       const result = await response.json();
 
-      if (!response.ok)
+      if (!response.ok) {
         throw new Error(result.message || "Failed to send message");
+      }
 
       setSubmitSuccess(true);
       setFormData({ name: "", email: "", message: "" });
@@ -48,6 +51,13 @@ export function ContactSection() {
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
       console.error("Error sending message:", error);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Failed to send message. Please try emailing directly at chriskwon0@gmail.com"
+      );
+      // Clear error after 5 seconds
+      setTimeout(() => setSubmitError(""), 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -225,7 +235,7 @@ export function ContactSection() {
                   }
                   required
                   className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
-                  placeholder="Tell me about your project..."
+                  placeholder="Tell me about anything!"
                 />
               </div>
 
@@ -246,8 +256,13 @@ export function ContactSection() {
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </MagneticButton>
                 {submitSuccess && (
-                  <p className="mt-3 text-center font-mono text-sm text-foreground/80">
+                  <p className="mt-3 text-center font-mono text-sm text-green-600">
                     Message sent successfully!
+                  </p>
+                )}
+                {submitError && (
+                  <p className="mt-3 text-center font-mono text-sm text-red-600">
+                    {submitError}
                   </p>
                 )}
               </div>
