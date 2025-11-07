@@ -31,7 +31,7 @@ export function ServicesSection() {
             {
               title: "Smart Contract Development",
               description:
-                "Building secure and efficient smart contracts for DeFi, NFTs, and DAOs",
+                "Building smart contracts using Solidity and Rust primarily for EVM networks",
               direction: "top",
             },
             {
@@ -41,9 +41,8 @@ export function ServicesSection() {
               direction: "right",
             },
             {
-              title: "ZK & Privacy Solutions",
-              description:
-                "Implementing zero-knowledge proofs and privacy-preserving technologies",
+              title: "Systems Architecture",
+              description: "Creating robust and scalable system designs",
               direction: "left",
             },
             {

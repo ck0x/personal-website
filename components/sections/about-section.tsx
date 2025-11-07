@@ -29,9 +29,9 @@ export function AboutSection({
               <h2 className="mb-3 font-sans text-3xl font-light leading-[1.1] tracking-tight text-foreground md:mb-4 md:text-6xl lg:text-7xl">
                 Building the
                 <br />
-                future of
+                Future of
                 <br />
-                <span className="text-foreground/40">web3</span>
+                <span className="text-foreground/40">Web3</span>
               </h2>
             </div>
 
@@ -44,13 +44,12 @@ export function AboutSection({
               style={{ transitionDelay: "200ms" }}
             >
               <p className="max-w-md text-sm leading-relaxed text-foreground/90 md:text-lg">
-                I'm a passionate web3 developer with expertise in building
-                decentralized applications, smart contracts, and blockchain
-                infrastructure.
+                I'm a passionate Software Engineer with great interest in
+                building applications that leverage decentralised systems.
               </p>
               <p className="max-w-md text-sm leading-relaxed text-foreground/90 md:text-lg">
                 Every project is an opportunity to push the boundaries of what's
-                possible with blockchain technology.
+                possible!
               </p>
             </div>
           </div>
@@ -59,15 +58,15 @@ export function AboutSection({
           <div className="flex flex-col justify-center space-y-6 md:space-y-12">
             {[
               {
-                value: "20+",
+                value: "4+",
                 label: "Projects",
-                sublabel: "Built across web3",
+                sublabel: "Contributed to",
                 direction: "right",
               },
               {
                 value: "4+",
                 label: "Years",
-                sublabel: "In blockchain",
+                sublabel: "Developing",
                 direction: "left",
               },
               {

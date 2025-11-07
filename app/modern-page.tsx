@@ -201,9 +201,9 @@ export default function ModernPage() {
             <AnimatedContainer className="space-y-6">
               <AnimatedItem>
                 <Text className="text-lg">
-                  Hi, I'm Chris! I'm a passionate web3 developer with expertise
-                  in building decentralized applications, smart contracts, and
-                  blockchain infrastructure.
+                  Hi, I'm Chris! I'm a passionate Software Engineer with great
+                  interest in building applications that leverage decentralised
+                  systems.
                 </Text>
               </AnimatedItem>
               <AnimatedItem delay={0.1}>

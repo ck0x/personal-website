@@ -30,23 +30,23 @@ export function WorkSection() {
           {[
             {
               number: "01",
-              title: "Decentrafile",
-              category: "Decentralized Storage",
-              year: "2024",
+              title: "PayNote",
+              category: "EVM Transaction Refrencing Protocol",
+              year: "2025",
               direction: "left",
             },
             {
               number: "02",
-              title: "ZK Payments",
-              category: "Privacy & Blockchain",
-              year: "2024",
+              title: "Honours Research on MACI",
+              category: "Evaluating MACI as a Voting Solution in New Zealand",
+              year: "2025",
               direction: "right",
             },
             {
               number: "03",
-              title: "NFT Marketplace",
-              category: "Web3 Platform",
-              year: "2023",
+              title: "Ralli",
+              category: "Badminton Stringing Service Tracker",
+              year: "2025",
               direction: "left",
             },
           ].map((project, i) => (

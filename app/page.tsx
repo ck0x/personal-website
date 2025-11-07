@@ -295,12 +295,12 @@ export default function Home() {
             </span>
           </div>
           <span className="font-sans text-xl font-semibold tracking-tight text-foreground">
-            Chris
+            chris0.eth
           </span>
         </button>
 
         <div className="hidden items-center gap-8 md:flex">
-          {["Home", "Work", "Services", "About", "Contact"].map(
+          {["Home", "Projects", "Services", "About", "Contact"].map(
             (item, index) => (
               <button
                 key={item}
@@ -342,20 +342,20 @@ export default function Home() {
           <div className="max-w-3xl">
             <div className="mb-4 inline-block animate-in fade-in slide-in-from-bottom-4 rounded-full border border-foreground/20 bg-foreground/15 px-4 py-1.5 backdrop-blur-md duration-700">
               <p className="font-mono text-xs text-foreground/90">
-                Web3 Developer & Blockchain Enthusiast
+                Software Engineer.
               </p>
             </div>
             <h1 className="mb-6 animate-in fade-in slide-in-from-bottom-8 font-sans text-6xl font-light leading-[1.1] tracking-tight text-foreground duration-1000 md:text-7xl lg:text-8xl">
               <span className="text-balance">
-                Building the
+                Buidling the
                 <br />
-                decentralized future
+                decentralised future
               </span>
             </h1>
             <p className="mb-8 max-w-xl animate-in fade-in slide-in-from-bottom-4 text-lg leading-relaxed text-foreground/90 duration-1000 delay-200 md:text-xl">
               <span className="text-pretty">
-                Creating innovative blockchain solutions and decentralized
-                applications that bridge the gap between web2 and web3.
+                Hey there! I'm Chris, a passionate software engineer dedicated
+                to building innovative solutions for the decentralised web.
               </span>
             </p>
             <div className="flex animate-in fade-in slide-in-from-bottom-4 flex-col gap-4 duration-1000 delay-300 sm:flex-row sm:items-center">
