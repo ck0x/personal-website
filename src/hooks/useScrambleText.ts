@@ -2,7 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 
 const CHARS = '!<>-_\\/[]{}—=+*^?#________';
 
-export const useScrambleText = (text: string, speed: number = 40, delay: number = 0) => {
+export const useScrambleText = (
+  text: string, 
+  speed: number = 40, 
+  delay: number = 0,
+  revealFactor: number = 0.1 // Factor to control sequential reveal (0 = all at once, 1 = strictly sequential)
+) => {
   const [displayText, setDisplayText] = useState('');
   const frameRequest = useRef<number | null>(null);
   const frame = useRef(0);
@@ -14,13 +19,13 @@ export const useScrambleText = (text: string, speed: number = 40, delay: number 
     const setupQueue = () => {
       queue.current = [];
       for (let i = 0; i < text.length; i++) {
-        const from = ''; // Start empty for "typed out" feel
+        const from = '';
         const to = text[i];
         
-        // Randomize start and end frames for each character
-        // We use speed as a multiplier for the duration
-        // The start frame has a bias toward the index to keep it "moving" left-to-right
-        const start = Math.floor(Math.random() * (speed / 2)) + (i * (speed / 10));
+        // Use revealFactor to adjust the sequential bias. 
+        // Lower factor means characters start closer together.
+        const stagger = i * speed * revealFactor;
+        const start = Math.floor(Math.random() * (speed / 2)) + stagger;
         const end = start + Math.floor(Math.random() * speed) + (speed / 2);
         
         queue.current.push({ from, to, start, end, char: '' });
@@ -38,7 +43,6 @@ export const useScrambleText = (text: string, speed: number = 40, delay: number 
           complete++;
           output += to;
         } else if (frame.current >= start) {
-          // If in the scramble phase, occasionally change the character
           if (!char || Math.random() < 0.28) {
             char = CHARS[Math.floor(Math.random() * CHARS.length)];
             queue.current[i].char = char;
@@ -52,7 +56,7 @@ export const useScrambleText = (text: string, speed: number = 40, delay: number 
       setDisplayText(output);
 
       if (complete === queue.current.length) {
-        setDisplayText(text); // Final cleanup
+        setDisplayText(text);
       } else {
         frame.current++;
         frameRequest.current = requestAnimationFrame(animate);
@@ -75,7 +79,7 @@ export const useScrambleText = (text: string, speed: number = 40, delay: number 
       clearTimeout(timeout);
       if (frameRequest.current) cancelAnimationFrame(frameRequest.current);
     };
-  }, [text, speed, delay]);
+  }, [text, speed, delay, revealFactor]);
 
   return displayText;
 };

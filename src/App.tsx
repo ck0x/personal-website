@@ -71,12 +71,27 @@ function App() {
               </span>
             </p>
           ) : (
-            <div style={{ lineHeight: "1.6", color: "#eee" }}>
+            <div style={{ lineHeight: "1.6", color: "#eee", display: "flex", flexDirection: "column", gap: "1rem" }}>
               <ScrambleText
-                key="about-text"
-                text="I'm a Software Engineering student at the University of Auckland with a passion for blockchain technology and decentralized systems. I enjoy building minimalist, efficient tools and exploring the frontiers of Web3. When I'm not coding, I'm usually researching the latest developments in Ethereum and L2 scaling solutions."
+                key="about-1"
+                text="I'm a Software Engineering student at the University of Auckland with a passion for blockchain technology and decentralized systems."
                 speed={20}
                 delay={0}
+                revealFactor={0.02}
+              />
+              <ScrambleText
+                key="about-2"
+                text="I enjoy building minimalist, efficient tools and exploring the frontiers of Web3."
+                speed={20}
+                delay={100}
+                revealFactor={0.02}
+              />
+              <ScrambleText
+                key="about-3"
+                text="When I'm not coding, I'm usually researching the latest developments in Ethereum and L2 scaling solutions."
+                speed={20}
+                delay={200}
+                revealFactor={0.02}
               />
             </div>
           )}

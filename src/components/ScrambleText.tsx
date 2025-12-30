@@ -6,6 +6,7 @@ interface ScrambleTextProps {
   as?: React.ElementType;
   speed?: number;
   delay?: number;
+  revealFactor?: number;
   className?: string;
   onClick?: () => void;
 }
@@ -13,12 +14,13 @@ interface ScrambleTextProps {
 export const ScrambleText = ({ 
   text, 
   as: Component = 'span', 
-  speed = 3, 
+  speed = 40, 
   delay = 0,
+  revealFactor = 0.1,
   className = '',
   onClick
 }: ScrambleTextProps) => {
-  const displayText = useScrambleText(text, speed, delay);
+  const displayText = useScrambleText(text, speed, delay, revealFactor);
 
   return (
     <Component className={className} onClick={onClick}>
