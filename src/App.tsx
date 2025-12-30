@@ -21,9 +21,6 @@ function App() {
 
   const handleTabHover = (tab: string) => {
     setHoveredTab(tab);
-    if (!openTab) {
-      setOpenTab(tab);
-    }
   };
 
   const closeTab = () => {
@@ -43,7 +40,7 @@ function App() {
         }}
       >
         <header>
-          <ScrambleText as="h1" text={randomGreeting} speed={15} delay={0} />
+          <ScrambleText as="h1" text={randomGreeting} speed={50} delay={0} />
           <ScrambleText
             as="div"
             text="Software Engineering Student at UoA // Blockchain Developer"
@@ -58,6 +55,7 @@ function App() {
             <li
               onMouseEnter={() => handleTabHover("about")}
               onMouseLeave={() => setHoveredTab(null)}
+              onClick={() => setOpenTab(openTab === "about" ? null : "about")}
               style={{
                 cursor: "pointer",
                 color: hoveredTab === "about" || openTab === "about" ? "#fff" : "#888",
@@ -70,6 +68,7 @@ function App() {
             <li
               onMouseEnter={() => handleTabHover("contact")}
               onMouseLeave={() => setHoveredTab(null)}
+              onClick={() => setOpenTab(openTab === "contact" ? null : "contact")}
               style={{
                 cursor: "pointer",
                 color: hoveredTab === "contact" || openTab === "contact" ? "#fff" : "#888",
@@ -86,7 +85,7 @@ function App() {
           style={{ 
             maxWidth: "600px", 
             marginTop: "1rem", 
-            minHeight: "200px",
+            minHeight: "300px",
             position: "relative" 
           }}
         >
@@ -173,22 +172,22 @@ function App() {
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
                     <a 
-                      href="https://github.com/ChrisKw0n" 
+                      href="https://github.com/ck0x" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
                     >
                       <ScrambleText text="> GITHUB" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[github.com/ChrisKw0n]</span>
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[github.com/ck0x]</span>
                     </a>
                     <a 
-                      href="https://linkedin.com/in/chris-kwon" 
+                      href="https://www.linkedin.com/in/chris-kwon-16aa19172/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
                     >
                       <ScrambleText text="> LINKEDIN" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[linkedin.com/in/chris-kwon]</span>
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[linkedin.com/in/chris-kwon-16aa19172]</span>
                     </a>
                   </div>
                 </div>
