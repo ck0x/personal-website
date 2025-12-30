@@ -37,7 +37,16 @@ export const useBlockData = () => {
         
         const data = await response.json();
         const blockNumberHex = data.result;
+
+        if (!blockNumberHex || typeof blockNumberHex !== 'string') {
+          throw new Error('Invalid RPC result');
+        }
+
         const blockNumber = parseInt(blockNumberHex, 16);
+        
+        if (isNaN(blockNumber)) {
+          throw new Error('Failed to parse block number');
+        }
 
         setBlocks((prev) => {
           const newBlock: BlockInfo = {
@@ -47,16 +56,22 @@ export const useBlockData = () => {
           };
           
           if (prev.length > 0 && prev[0].number === newBlock.number) return prev;
+          if (prev.length > 0 && prev[0].number === 'NaN') return [newBlock]; // Clear NaN state
           return [newBlock, ...prev].slice(0, 15);
         });
       } catch (error) {
-        // Simulation fallback
+        // Simulation fallback - ensure it NEVER uses 'NaN'
         setBlocks((prev) => {
-          const newBlock = createSimulatedBlock(prev[0]?.number);
+          const lastValidNum = prev[0]?.number && prev[0].number !== 'NaN' 
+            ? parseInt(prev[0].number) 
+            : 19345678;
+          
+          const newBlock = createSimulatedBlock(isNaN(lastValidNum) ? undefined : lastValidNum.toString());
           return [newBlock, ...prev].slice(0, 15);
         });
       }
     };
+
 
     fetchBlock();
     const interval = setInterval(fetchBlock, 12000);
