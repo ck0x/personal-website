@@ -1,4 +1,5 @@
 import { ScrambleText } from './components/ScrambleText';
+import { BlockFeed } from './components/BlockFeed';
 
 function App() {
   const links = [
@@ -8,8 +9,12 @@ function App() {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-      <header>
+    <div style={{ position: 'relative', width: '100%' }}>
+      <BlockFeed />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', paddingRight: '250px' }}>
+        <header>
+
         <ScrambleText 
           as="h1" 
           text="CHRIS KWON" 
@@ -60,6 +65,7 @@ function App() {
       </footer>
 
 
+      </div>
     </div>
   );
 }
