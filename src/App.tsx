@@ -42,36 +42,46 @@ function App() {
                 color: isAboutHovered ? "#fff" : "#888",
                 transition: "color 0.25s",
                 fontWeight: 500,
-                display: "inline-block"
+                display: "inline-block",
               }}
             >
-              <ScrambleText
-                text="[ ABOUT ME ]"
-                speed={100}
-                delay={2000}
-              />
+              <ScrambleText text="[ ABOUT ME ]" speed={100} delay={2000} />
             </li>
           </ul>
         </nav>
 
-        <main style={{ maxWidth: "600px", marginTop: "2rem", minHeight: "200px" }}>
+        <main
+          style={{ maxWidth: "600px", marginTop: "2rem", minHeight: "200px" }}
+        >
           {!isAboutHovered ? (
             <p style={{ lineHeight: "1.6", color: "#888" }}>
               <ScrambleText
                 key="welcome"
-                text="Welcome to my digital playground."
+                text="Welcome."
                 speed={120}
                 delay={3000}
               />
               <br />
               <span
-                style={{ fontSize: "0.9em", display: "block", marginTop: "1rem" }}
+                style={{
+                  fontSize: "0.9em",
+                  display: "block",
+                  marginTop: "1rem",
+                }}
               >
-                This site is a work in progress. Minimalist by design.
+                ck0x is a work in progress ⟠
               </span>
             </p>
           ) : (
-            <div style={{ lineHeight: "1.6", color: "#eee", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div
+              style={{
+                lineHeight: "1.6",
+                color: "#eee",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
               <ScrambleText
                 key="about-1"
                 text="I'm a Software Engineering student at the University of Auckland with a passion for blockchain technology and decentralized systems."
