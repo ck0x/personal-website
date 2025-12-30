@@ -58,7 +58,10 @@ function App() {
               onClick={() => setOpenTab(openTab === "about" ? null : "about")}
               style={{
                 cursor: "pointer",
-                color: hoveredTab === "about" || openTab === "about" ? "#fff" : "#888",
+                color:
+                  hoveredTab === "about" || openTab === "about"
+                    ? "#fff"
+                    : "#888",
                 transition: "color 0.25s",
                 fontWeight: 500,
               }}
@@ -68,10 +71,15 @@ function App() {
             <li
               onMouseEnter={() => handleTabHover("contact")}
               onMouseLeave={() => setHoveredTab(null)}
-              onClick={() => setOpenTab(openTab === "contact" ? null : "contact")}
+              onClick={() =>
+                setOpenTab(openTab === "contact" ? null : "contact")
+              }
               style={{
                 cursor: "pointer",
-                color: hoveredTab === "contact" || openTab === "contact" ? "#fff" : "#888",
+                color:
+                  hoveredTab === "contact" || openTab === "contact"
+                    ? "#fff"
+                    : "#888",
                 transition: "color 0.25s",
                 fontWeight: 500,
               }}
@@ -82,11 +90,11 @@ function App() {
         </nav>
 
         <main
-          style={{ 
-            maxWidth: "600px", 
-            marginTop: "1rem", 
+          style={{
+            maxWidth: "600px",
+            marginTop: "1rem",
             minHeight: "300px",
-            position: "relative" 
+            position: "relative",
           }}
         >
           {openTab === null ? (
@@ -117,7 +125,7 @@ function App() {
                 flexDirection: "column",
                 gap: "1rem",
                 position: "relative",
-                paddingTop: "2rem"
+                paddingTop: "2rem",
               }}
             >
               <button
@@ -133,7 +141,7 @@ function App() {
                   fontFamily: "inherit",
                   fontSize: "0.8rem",
                   padding: "4px",
-                  transition: "color 0.2s"
+                  transition: "color 0.2s",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
@@ -166,28 +174,55 @@ function App() {
                   />
                 </>
               ) : openTab === "contact" ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.5rem",
+                  }}
+                >
                   <p style={{ color: "#888", marginBottom: "0.5rem" }}>
-                    <ScrambleText text="Connection established. Reach out via:" speed={30} />
+                    <ScrambleText
+                      text="Connection established. Reach out via:"
+                      speed={30}
+                    />
                   </p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
-                    <a 
-                      href="https://github.com/ck0x" 
-                      target="_blank" 
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.8rem",
+                    }}
+                  >
+                    <a
+                      href="https://github.com/ck0x"
+                      target="_blank"
                       rel="noopener noreferrer"
-                      style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
                     >
                       <ScrambleText text="> GITHUB" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[github.com/ck0x]</span>
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
+                        [github.com/ck0x]
+                      </span>
                     </a>
-                    <a 
-                      href="https://www.linkedin.com/in/chris-kwon-16aa19172/" 
-                      target="_blank" 
+                    <a
+                      href="https://www.linkedin.com/in/chris-kwon-16aa19172/"
+                      target="_blank"
                       rel="noopener noreferrer"
-                      style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
                     >
                       <ScrambleText text="> LINKEDIN" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[linkedin.com/in/chris-kwon-16aa19172]</span>
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
+                        [linkedin.com/in/chris-kwon-16aa19172]
+                      </span>
                     </a>
                   </div>
                 </div>
