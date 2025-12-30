@@ -8,7 +8,6 @@ export interface BlockInfo {
 
 const ETHERSCAN_BASE = "https://api.etherscan.io/v2/api";
 const POLL_INTERVAL_MS = 2000; // 2 seconds
-const MAX_MISSED_TO_FETCH = 50; // safety cap to avoid spamming API
 
 const tsFromHex = (hex?: string) => {
   if (!hex) return new Date().toLocaleTimeString([], { hour12: false });
@@ -21,13 +20,7 @@ const tsFromHex = (hex?: string) => {
 export const useBlockData = () => {
   const [blocks, setBlocks] = useState<BlockInfo[]>([]);
   const lastSeenRef = useRef<number | null>(null);
-  const apiKey = getApiKeyFromEnv();
-
-  function getApiKeyFromEnv(): string | null {
-    const key = import.meta.env.VITE_ETHERSCAN_API_KEY;
-    console.log("Etherscan API Key:", key ? "FOUND" : "NOT FOUND");
-    return key ? key : null;
-  }
+  const apiKey = import.meta.env.VITE_ETHERSCAN_API_KEY || null;
 
   const parsePossibleBlock = (val: any): number | null => {
     if (typeof val === "number" && Number.isFinite(val)) return Math.floor(val);
@@ -168,43 +161,27 @@ export const useBlockData = () => {
         const lastSeen = lastSeenRef.current as number;
         if (latest <= lastSeen) return; // nothing new
 
-        const from = lastSeen + 1;
-        const to = latest;
-        const count = to - from + 1;
-        const safeCount = Math.min(count, MAX_MISSED_TO_FETCH);
-        const startToFetch = to - safeCount + 1;
-
-        const fetched: BlockInfo[] = [];
-        for (let n = startToFetch; n <= to; n++) {
-          try {
-            const b = await fetchBlockByNumber(n);
-            fetched.push(b);
-          } catch (err) {
-            console.error("block fetch failed", n, err);
-          }
-        }
-
-        if (!mounted) return;
-        if (fetched.length === 0) {
-          // nothing fetched; do not advance lastSeen so we retry next poll
-          return;
-        }
-
-        const newestFirst = fetched.reverse();
-        lastSeenRef.current = latest;
-        setBlocks((prev) => {
-          const combined = [...newestFirst, ...prev];
-          const seen = new Set<string>();
-          const dedup: BlockInfo[] = [];
-          for (const b of combined) {
-            if (!seen.has(b.number)) {
-              dedup.push(b);
-              seen.add(b.number);
+        // Only fetch the latest block (we poll frequently enough)
+        try {
+          const b = await fetchBlockByNumber(latest);
+          if (!mounted) return;
+          lastSeenRef.current = latest;
+          setBlocks((prev) => {
+            const combined = [b, ...prev];
+            const dedup: BlockInfo[] = [];
+            const seen = new Set<string>();
+            for (const item of combined) {
+              if (!seen.has(item.number)) {
+                dedup.push(item);
+                seen.add(item.number);
+              }
+              if (dedup.length >= 15) break;
             }
-            if (dedup.length >= 15) break;
-          }
-          return dedup;
-        });
+            return dedup;
+          });
+        } catch (err) {
+          console.error("block fetch failed for latest", latest, err);
+        }
       } catch (error) {
         console.error("poll error", error);
         return; // keep feed unchanged
