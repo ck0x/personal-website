@@ -9,11 +9,11 @@ function App() {
   const randomGreeting =
     greetings[Math.floor(Math.random() * greetings.length)];
 
-  const [dots, setDots] = useState('...');
+  const [dots, setDots] = useState("...");
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setDots(prev => prev === '.' ? '..' : prev === '..' ? '...' : '.');
+      setDots((prev) => (prev === "." ? ".." : prev === ".." ? "..." : "."));
     }, 500);
     return () => clearInterval(interval);
   }, []);
