@@ -31,14 +31,7 @@ function App() {
     <div style={{ position: "relative", width: "100%" }}>
       <BlockFeed />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "2rem",
-          paddingRight: "250px",
-        }}
-      >
+      <div className="container">
         <header>
           <ScrambleText as="h1" text={randomGreeting} speed={50} delay={0} />
           <ScrambleText
@@ -89,14 +82,7 @@ function App() {
           </ul>
         </nav>
 
-        <main
-          style={{
-            maxWidth: "600px",
-            marginTop: "1rem",
-            minHeight: "300px",
-            position: "relative",
-          }}
-        >
+        <main className="main-content">
           {openTab === null ? (
             <p style={{ lineHeight: "1.6", color: "#888" }}>
               <ScrambleText

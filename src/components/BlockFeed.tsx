@@ -5,22 +5,32 @@ export const BlockFeed = () => {
   const blocks = useBlockData();
 
   return (
-    <aside style={{
-      position: 'fixed',
-      right: '1.5rem',
-      top: '1.5rem',
-      bottom: '1.5rem',
-      width: '220px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '0.5rem',
-      fontSize: '0.75rem',
-      color: '#aaa', // Lighter grey for better visibility
-      opacity: 0.8, // Increased opacity
-      textAlign: 'right',
-      pointerEvents: 'none',
-      overflow: 'hidden',
-    }}>
+    <aside 
+      className="block-feed"
+      style={{
+        position: 'fixed',
+        right: '1.5rem',
+        top: '1.5rem',
+        bottom: '1.5rem',
+        width: '220px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+        fontSize: '0.75rem',
+        color: '#aaa',
+        opacity: 0.8,
+        textAlign: 'right',
+        pointerEvents: 'none',
+        overflow: 'hidden',
+      }}
+    >
+      <style>{`
+        @media (max-width: 1024px) {
+          .block-feed {
+            display: none !important;
+          }
+        }
+      `}</style>
 
       <div style={{ marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>
         <ScrambleText text="[ ETH_MAINNET_FEED ]" speed={20} />
