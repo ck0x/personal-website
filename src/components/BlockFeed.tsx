@@ -26,21 +26,42 @@ export const BlockFeed = () => {
         <ScrambleText text="[ ETH_MAINNET_FEED ]" speed={20} />
       </div>
       
-      {blocks.map((block) => (
-        <div key={block.number} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <ScrambleText 
-            text={`BLOCK_${block.number}`} 
-            speed={30} 
-            delay={0}
-          />
-          <div style={{ fontSize: '0.6rem', color: '#555' }}>
-            <ScrambleText 
-              text={`TS: ${block.timestamp}`} 
-              speed={50} 
-            />
+      {blocks.map((block, index) => {
+        const isLatest = index === 0;
+        return (
+          <div key={block.number} style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '2px',
+            position: 'relative',
+            marginBottom: isLatest ? '0.5rem' : '0'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px' }}>
+              {isLatest && (
+                <span className="blink" style={{ 
+                  color: '#00ff00', 
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.1em'
+                }}>
+                  [ LIVE ]
+                </span>
+              )}
+              <ScrambleText 
+                text={`BLOCK_${block.number}`} 
+                speed={30} 
+                delay={0}
+                style={isLatest ? { color: '#eee', fontWeight: 'bold' } : undefined}
+              />
+            </div>
+            <div style={{ fontSize: '0.6rem', color: isLatest ? '#888' : '#555' }}>
+              <ScrambleText 
+                text={`TS: ${block.timestamp}`} 
+                speed={50} 
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </aside>
   );
 };
