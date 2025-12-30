@@ -13,14 +13,14 @@ function App() {
         <ScrambleText 
           as="h1" 
           text="CHRIS KWON" 
-          speed={0.5} 
+          speed={60} 
           delay={0}
         />
         <ScrambleText 
           as="div" 
           text="Creative Developer // Web Enthusiast" 
-          speed={0.8} 
-          delay={1000}
+          speed={80} 
+          delay={1200}
           className="subtitle"
         />
       </header>
@@ -32,8 +32,8 @@ function App() {
               <a href={link.href}>
                 <ScrambleText 
                   text={`[ ${link.label.toUpperCase()} ]`} 
-                  speed={1.5} 
-                  delay={1500 + (index * 200)} 
+                  speed={100} 
+                  delay={2500 + (index * 400)} 
                 />
               </a>
             </li>
@@ -45,8 +45,8 @@ function App() {
         <p style={{ lineHeight: '1.6', color: '#888' }}>
           <ScrambleText 
             text="Welcome to my digital playground." 
-            speed={2} 
-            delay={2500} 
+            speed={120} 
+            delay={4000} 
           />
           <br />
           <span style={{ fontSize: '0.9em', display: 'block', marginTop: '1rem' }}>
@@ -56,8 +56,10 @@ function App() {
       </main>
 
       <footer style={{ marginTop: 'auto', paddingTop: '4rem', fontSize: '0.8rem', color: '#444' }}>
-        <ScrambleText text="© 2025 // SYSTEM READY" speed={1} delay={3000} />
+        <ScrambleText text="© 2025 // SYSTEM READY" speed={150} delay={6000} />
       </footer>
+
+
     </div>
   );
 }

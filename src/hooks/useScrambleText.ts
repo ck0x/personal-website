@@ -2,42 +2,67 @@ import { useState, useEffect, useRef } from 'react';
 
 const CHARS = '!<>-_\\/[]{}—=+*^?#________';
 
-export const useScrambleText = (text: string, speed: number = 2, delay: number = 0) => {
-  const [displayText, setDisplayText] = useState(text);
-  
-  // Use a ref to keep track of the animation frame specifically
+export const useScrambleText = (text: string, speed: number = 40, delay: number = 0) => {
+  const [displayText, setDisplayText] = useState('');
   const frameRequest = useRef<number | null>(null);
-  const iteration = useRef(0);
+  const frame = useRef(0);
+  const queue = useRef<{ from: string; to: string; start: number; end: number; char: string }[]>([]);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
 
-    const startAnimation = () => {
-      iteration.current = 0;
-      
-      const animate = () => {
-        setDisplayText(() => 
-          text
-            .split('')
-            .map((_, index) => { // Removed unused char
-              if (index < iteration.current) {
-                return text[index];
-              }
-              return CHARS[Math.floor(Math.random() * CHARS.length)];
-            })
-            .join('')
-        );
+    const setupQueue = () => {
+      queue.current = [];
+      for (let i = 0; i < text.length; i++) {
+        const from = ''; // Start empty for "typed out" feel
+        const to = text[i];
+        
+        // Randomize start and end frames for each character
+        // We use speed as a multiplier for the duration
+        // The start frame has a bias toward the index to keep it "moving" left-to-right
+        const start = Math.floor(Math.random() * (speed / 2)) + (i * (speed / 10));
+        const end = start + Math.floor(Math.random() * speed) + (speed / 2);
+        
+        queue.current.push({ from, to, start, end, char: '' });
+      }
+    };
 
-        if (iteration.current < text.length) {
-          iteration.current += 1 / speed;
-          // Loop
-          frameRequest.current = requestAnimationFrame(animate); 
+    const animate = () => {
+      let output = '';
+      let complete = 0;
+
+      for (let i = 0; i < queue.current.length; i++) {
+        let { from, to, start, end, char } = queue.current[i];
+
+        if (frame.current >= end) {
+          complete++;
+          output += to;
+        } else if (frame.current >= start) {
+          // If in the scramble phase, occasionally change the character
+          if (!char || Math.random() < 0.28) {
+            char = CHARS[Math.floor(Math.random() * CHARS.length)];
+            queue.current[i].char = char;
+          }
+          output += char;
         } else {
-          setDisplayText(text); // Ensure final state is clean
+          output += from;
         }
-      };
+      }
 
-      frameRequest.current = requestAnimationFrame(animate);
+      setDisplayText(output);
+
+      if (complete === queue.current.length) {
+        setDisplayText(text); // Final cleanup
+      } else {
+        frame.current++;
+        frameRequest.current = requestAnimationFrame(animate);
+      }
+    };
+
+    const startAnimation = () => {
+      frame.current = 0;
+      setupQueue();
+      animate();
     };
 
     if (delay > 0) {
@@ -54,4 +79,5 @@ export const useScrambleText = (text: string, speed: number = 2, delay: number =
 
   return displayText;
 };
+
 
