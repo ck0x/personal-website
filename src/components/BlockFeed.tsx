@@ -1,27 +1,42 @@
-import { useBlockData } from '../hooks/useBlockData';
-import { ScrambleText } from './ScrambleText';
+import { useState, useEffect } from "react";
+import { useBlockData } from "../hooks/useBlockData";
+import { ScrambleText } from "./ScrambleText";
+
+const formatRelativeTime = (secs: number) => {
+  const diff = Math.floor(Date.now() / 1000) - secs;
+  if (diff < 5) return "now";
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+};
 
 export const BlockFeed = () => {
   const blocks = useBlockData();
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 15000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <aside 
+    <aside
       className="block-feed"
       style={{
-        position: 'fixed',
-        right: '1.5rem',
-        top: '1.5rem',
-        bottom: '1.5rem',
-        width: '220px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.5rem',
-        fontSize: '0.75rem',
-        color: '#aaa',
+        position: "fixed",
+        right: "1.5rem",
+        top: "1.5rem",
+        bottom: "1.5rem",
+        width: "220px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.5rem",
+        fontSize: "0.75rem",
+        color: "#aaa",
         opacity: 0.8,
-        textAlign: 'right',
-        pointerEvents: 'none',
-        overflow: 'hidden',
+        textAlign: "right",
+        pointerEvents: "none",
+        overflow: "hidden",
       }}
     >
       <style>{`
@@ -32,41 +47,64 @@ export const BlockFeed = () => {
         }
       `}</style>
 
-      <div style={{ marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>
+      <div
+        style={{
+          marginBottom: "1rem",
+          borderBottom: "1px solid #333",
+          paddingBottom: "0.5rem",
+        }}
+      >
         <ScrambleText text="[ ETH_MAINNET_FEED ]" speed={20} />
       </div>
-      
+
       {blocks.map((block, index) => {
         const isLatest = index === 0;
         return (
-          <div key={block.number} style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '2px',
-            position: 'relative',
-            marginBottom: isLatest ? '0.5rem' : '0'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px' }}>
+          <div
+            key={block.number}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "2px",
+              position: "relative",
+              marginBottom: isLatest ? "0.5rem" : "0",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
               {isLatest && (
-                <span className="blink" style={{ 
-                  color: '#00ff00', 
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.1em'
-                }}>
+                <span
+                  className="blink"
+                  style={{
+                    color: "#00ff00",
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.1em",
+                  }}
+                >
                   [ LIVE ]
                 </span>
               )}
-              <ScrambleText 
-                text={`BLOCK_${block.number}`} 
-                speed={30} 
+              <ScrambleText
+                text={`BLOCK_${block.number}`}
+                speed={30}
                 delay={0}
-                style={isLatest ? { color: '#eee', fontWeight: 'bold' } : undefined}
+                style={
+                  isLatest ? { color: "#eee", fontWeight: "bold" } : undefined
+                }
               />
             </div>
-            <div style={{ fontSize: '0.6rem', color: isLatest ? '#888' : '#555' }}>
-              <ScrambleText 
-                text={`TS: ${block.timestamp}`} 
-                speed={50} 
+            <div
+              style={{ fontSize: "0.6rem", color: isLatest ? "#888" : "#555" }}
+            >
+              <ScrambleText
+                text={`${formatRelativeTime(block.timestamp)}`}
+                speed={50}
               />
             </div>
           </div>
