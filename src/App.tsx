@@ -3,7 +3,8 @@ import { ScrambleText } from "./components/ScrambleText";
 import { BlockFeed } from "./components/BlockFeed";
 
 function App() {
-  const [isAboutHovered, setIsAboutHovered] = useState(false);
+  const [openTab, setOpenTab] = useState<string | null>(null);
+  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const greetings = ["Hey", "안녕", "おはよ"];
 
   const randomGreeting =
@@ -18,6 +19,17 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleTabHover = (tab: string) => {
+    setHoveredTab(tab);
+    if (!openTab) {
+      setOpenTab(tab);
+    }
+  };
+
+  const closeTab = () => {
+    setOpenTab(null);
+  };
+
   return (
     <div style={{ position: "relative", width: "100%" }}>
       <BlockFeed />
@@ -26,7 +38,7 @@ function App() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "4rem",
+          gap: "2rem",
           paddingRight: "250px",
         }}
       >
@@ -42,27 +54,43 @@ function App() {
         </header>
 
         <nav>
-          <ul>
+          <ul style={{ display: "flex", gap: "2rem" }}>
             <li
-              onMouseEnter={() => setIsAboutHovered(true)}
-              onMouseLeave={() => setIsAboutHovered(false)}
+              onMouseEnter={() => handleTabHover("about")}
+              onMouseLeave={() => setHoveredTab(null)}
               style={{
                 cursor: "pointer",
-                color: isAboutHovered ? "#fff" : "#888",
+                color: hoveredTab === "about" || openTab === "about" ? "#fff" : "#888",
                 transition: "color 0.25s",
                 fontWeight: 500,
-                display: "inline-block",
               }}
             >
               <ScrambleText text="[ ABOUT ME ]" speed={100} delay={2000} />
+            </li>
+            <li
+              onMouseEnter={() => handleTabHover("contact")}
+              onMouseLeave={() => setHoveredTab(null)}
+              style={{
+                cursor: "pointer",
+                color: hoveredTab === "contact" || openTab === "contact" ? "#fff" : "#888",
+                transition: "color 0.25s",
+                fontWeight: 500,
+              }}
+            >
+              <ScrambleText text="[ CONTACTS ]" speed={100} delay={2200} />
             </li>
           </ul>
         </nav>
 
         <main
-          style={{ maxWidth: "600px", marginTop: "2rem", minHeight: "200px" }}
+          style={{ 
+            maxWidth: "600px", 
+            marginTop: "1rem", 
+            minHeight: "200px",
+            position: "relative" 
+          }}
         >
-          {!isAboutHovered ? (
+          {openTab === null ? (
             <p style={{ lineHeight: "1.6", color: "#888" }}>
               <ScrambleText
                 key="welcome"
@@ -89,29 +117,82 @@ function App() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
+                position: "relative",
+                paddingTop: "2rem"
               }}
             >
-              <ScrambleText
-                key="about-1"
-                text="I'm Chris Kwon, a passionate Software Engineering student at the University of Auckland."
-                speed={20}
-                delay={0}
-                revealFactor={0.02}
-              />
-              <ScrambleText
-                key="about-2"
-                text="My focus is on blockchain development, where I build decentralised applications and explore Web3 innovations."
-                speed={20}
-                delay={100}
-                revealFactor={0.02}
-              />
-              <ScrambleText
-                key="about-3"
-                text="I'm constantly learning about emerging technologies in the crypto space."
-                speed={20}
-                delay={200}
-                revealFactor={0.02}
-              />
+              <button
+                onClick={closeTab}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  background: "none",
+                  border: "none",
+                  color: "#555",
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  fontSize: "0.8rem",
+                  padding: "4px",
+                  transition: "color 0.2s"
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+              >
+                [ CLOSE X ]
+              </button>
+
+              {openTab === "about" ? (
+                <>
+                  <ScrambleText
+                    key="about-1"
+                    text="I'm Chris Kwon, a passionate Software Engineering student at the University of Auckland."
+                    speed={20}
+                    delay={0}
+                    revealFactor={0.02}
+                  />
+                  <ScrambleText
+                    key="about-2"
+                    text="My focus is on blockchain development, where I build decentralised applications and explore Web3 innovations."
+                    speed={20}
+                    delay={100}
+                    revealFactor={0.02}
+                  />
+                  <ScrambleText
+                    key="about-3"
+                    text="I'm constantly learning about emerging technologies in the crypto space."
+                    speed={20}
+                    delay={200}
+                    revealFactor={0.02}
+                  />
+                </>
+              ) : openTab === "contact" ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                  <p style={{ color: "#888", marginBottom: "0.5rem" }}>
+                    <ScrambleText text="Connection established. Reach out via:" speed={30} />
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+                    <a 
+                      href="https://github.com/ChrisKw0n" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                    >
+                      <ScrambleText text="> GITHUB" speed={50} />
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[github.com/ChrisKw0n]</span>
+                    </a>
+                    <a 
+                      href="https://linkedin.com/in/chris-kwon" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                    >
+                      <ScrambleText text="> LINKEDIN" speed={50} />
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>[linkedin.com/in/chris-kwon]</span>
+                    </a>
+                  </div>
+                </div>
+              ) : null}
             </div>
           )}
         </main>
