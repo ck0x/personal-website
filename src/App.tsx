@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrambleText } from "./components/ScrambleText";
 import { BlockFeed } from "./components/BlockFeed";
 
@@ -8,6 +8,15 @@ function App() {
 
   const randomGreeting =
     greetings[Math.floor(Math.random() * greetings.length)];
+
+  const [dots, setDots] = useState('...');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots(prev => prev === '.' ? '..' : prev === '..' ? '...' : '.');
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
@@ -69,7 +78,7 @@ function App() {
                   marginTop: "1rem",
                 }}
               >
-                ck0x is a work in progress ⟠
+                ck0x is a work in progress ⟠{dots}
               </span>
             </p>
           ) : (
@@ -84,21 +93,21 @@ function App() {
             >
               <ScrambleText
                 key="about-1"
-                text="I'm a Software Engineering student at the University of Auckland with a passion for blockchain technology and decentralized systems."
+                text="I'm Chris Kwon, a passionate Software Engineering student at the University of Auckland."
                 speed={20}
                 delay={0}
                 revealFactor={0.02}
               />
               <ScrambleText
                 key="about-2"
-                text="I enjoy building minimalist, efficient tools and exploring the frontiers of Web3."
+                text="My focus is on blockchain development, where I build decentralised applications and explore Web3 innovations."
                 speed={20}
                 delay={100}
                 revealFactor={0.02}
               />
               <ScrambleText
                 key="about-3"
-                text="When I'm not coding, I'm usually researching the latest developments in Ethereum and L2 scaling solutions."
+                text="I'm constantly learning about emerging technologies in the crypto space."
                 speed={20}
                 delay={200}
                 revealFactor={0.02}
