@@ -10,6 +10,16 @@ export const useBlockData = () => {
   const [blocks, setBlocks] = useState<BlockInfo[]>([]);
 
   useEffect(() => {
+    // Helper to generate a fake block if needed
+    const createSimulatedBlock = (lastBlock?: string) => {
+      const num = lastBlock ? parseInt(lastBlock) + 1 : 19345678;
+      return {
+        number: num.toString(),
+        hash: '0x' + Math.random().toString(16).slice(2, 10),
+        timestamp: new Date().toLocaleTimeString([], { hour12: false }),
+      };
+    };
+
     const fetchBlock = async () => {
       try {
         const response = await fetch('https://cloudflare-eth.com', {
@@ -22,6 +32,9 @@ export const useBlockData = () => {
             id: 1,
           }),
         });
+        
+        if (!response.ok) throw new Error('RPC error');
+        
         const data = await response.json();
         const blockNumberHex = data.result;
         const blockNumber = parseInt(blockNumberHex, 16);
@@ -29,27 +42,28 @@ export const useBlockData = () => {
         setBlocks((prev) => {
           const newBlock: BlockInfo = {
             number: blockNumber.toString(),
-            hash: blockNumberHex, // Simplified for visual
+            hash: blockNumberHex,
             timestamp: new Date().toLocaleTimeString([], { hour12: false }),
           };
           
-          // Only add if it's a new block
-          if (prev.length > 0 && prev[0].number === newBlock.number) {
-            return prev;
-          }
-          
-          return [newBlock, ...prev].slice(0, 10);
+          if (prev.length > 0 && prev[0].number === newBlock.number) return prev;
+          return [newBlock, ...prev].slice(0, 15);
         });
       } catch (error) {
-        console.error('Failed to fetch Ethereum block:', error);
+        // Simulation fallback
+        setBlocks((prev) => {
+          const newBlock = createSimulatedBlock(prev[0]?.number);
+          return [newBlock, ...prev].slice(0, 15);
+        });
       }
     };
 
-    fetchBlock(); // Initial fetch
-    const interval = setInterval(fetchBlock, 12000); // Fetch every ~12s
+    fetchBlock();
+    const interval = setInterval(fetchBlock, 12000);
 
     return () => clearInterval(interval);
   }, []);
 
   return blocks;
 };
+

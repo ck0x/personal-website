@@ -2,6 +2,17 @@ import { ScrambleText } from './components/ScrambleText';
 import { BlockFeed } from './components/BlockFeed';
 
 function App() {
+  const greetings = [
+    'hey',
+    '안녕',
+    'おはよ',
+  ];
+
+
+
+
+  const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+
   const links = [
     { label: 'Short Bio', href: '#bio' },
     { label: 'Projects', href: '#projects' },
@@ -14,21 +25,21 @@ function App() {
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', paddingRight: '250px' }}>
         <header>
+          <ScrambleText 
+            as="h1" 
+            text={randomGreeting} 
+            speed={15} 
+            delay={0}
+          />
+          <ScrambleText 
+            as="div" 
+            text="Creative Developer // Web Enthusiast" 
+            speed={80} 
+            delay={1200}
+            className="subtitle"
+          />
+        </header>
 
-        <ScrambleText 
-          as="h1" 
-          text="CHRIS KWON" 
-          speed={60} 
-          delay={0}
-        />
-        <ScrambleText 
-          as="div" 
-          text="Creative Developer // Web Enthusiast" 
-          speed={80} 
-          delay={1200}
-          className="subtitle"
-        />
-      </header>
 
       <nav>
         <ul>

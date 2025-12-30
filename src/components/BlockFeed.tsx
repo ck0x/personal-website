@@ -7,20 +7,21 @@ export const BlockFeed = () => {
   return (
     <aside style={{
       position: 'fixed',
-      right: '2rem',
-      top: '2rem',
-      bottom: '2rem',
-      width: '200px',
+      right: '1.5rem',
+      top: '1.5rem',
+      bottom: '1.5rem',
+      width: '220px',
       display: 'flex',
       flexDirection: 'column',
       gap: '0.5rem',
-      fontSize: '0.7rem',
-      color: '#888',
-      opacity: 0.6,
+      fontSize: '0.75rem',
+      color: '#aaa', // Lighter grey for better visibility
+      opacity: 0.8, // Increased opacity
       textAlign: 'right',
       pointerEvents: 'none',
       overflow: 'hidden',
     }}>
+
       <div style={{ marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>
         <ScrambleText text="[ ETH_MAINNET_FEED ]" speed={20} />
       </div>
