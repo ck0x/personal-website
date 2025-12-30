@@ -2,19 +2,18 @@ import { useState, useEffect, useRef } from "react";
 
 export interface BlockInfo {
   number: string;
-  hash: string;
-  timestamp: string;
+  hash?: string;
+  timestamp: number; // seconds since epoch
 }
 
 const ETHERSCAN_BASE = "https://api.etherscan.io/v2/api";
-const POLL_INTERVAL_MS = 2000; // 2 seconds
+const POLL_INTERVAL_MS = 5000; // 5 seconds
 
-const tsFromHex = (hex?: string) => {
-  if (!hex) return new Date().toLocaleTimeString([], { hour12: false });
+const parseTimestampSeconds = (hex?: string): number | null => {
+  if (!hex) return null;
   const n = parseInt(hex, 16);
-  if (Number.isNaN(n))
-    return new Date().toLocaleTimeString([], { hour12: false });
-  return new Date(n * 1000).toLocaleTimeString([], { hour12: false });
+  if (Number.isNaN(n)) return null;
+  return n;
 };
 
 export const useBlockData = () => {
@@ -68,7 +67,7 @@ export const useBlockData = () => {
 
     // If Etherscan returns an error payload, fall back to RPC
     if (data && data.status === "0") {
-      console.warn(
+      console.debug(
         "Etherscan error, falling back to RPC:",
         data.message,
         data.result
@@ -83,11 +82,14 @@ export const useBlockData = () => {
           id: 1,
         }),
       });
-      if (!rpcRes.ok) throw new Error("Failed RPC latest block fallback");
+      if (!rpcRes.ok) {
+        console.debug("Failed RPC latest block fallback (non-OK response)");
+        throw new Error("Failed RPC latest block fallback");
+      }
       const rpcJson = await rpcRes.json();
       const parsed = parsePossibleBlock(rpcJson && rpcJson.result);
       if (parsed === null) {
-        console.error("Invalid RPC latest block payload (fallback):", rpcJson);
+        console.debug("Invalid RPC latest block payload (fallback):", rpcJson);
         throw new Error("Parsed NaN latest block from RPC fallback");
       }
       return parsed;
@@ -101,7 +103,7 @@ export const useBlockData = () => {
     return parsed;
   };
 
-  const fetchBlockByNumber = async (num: number): Promise<BlockInfo> => {
+  const fetchBlockByNumber = async (num: number): Promise<BlockInfo | null> => {
     const hex = `0x${num.toString(16)}`;
     if (!apiKey) {
       // RPC call
@@ -122,7 +124,8 @@ export const useBlockData = () => {
       return {
         number: num.toString(),
         hash: r.hash || hex,
-        timestamp: tsFromHex(r.timestamp || undefined),
+        timestamp:
+          parseTimestampSeconds(r.timestamp) ?? Math.floor(Date.now() / 1000),
       };
     }
 
@@ -130,15 +133,57 @@ export const useBlockData = () => {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Failed to fetch block ${num} from Etherscan`);
     const data = await res.json();
+
+    // Etherscan occasionally returns status: "0" (e.g. NOTOK) for a short time
+    // — fall back to a public RPC call, but don't surface a noisy error on first load.
     if (data && data.status === "0") {
-      throw new Error(`Etherscan block fetch failed: ${data.message}`);
+      console.debug(
+        `Etherscan block fetch failed, attempting RPC fallback: ${data.message}`
+      );
+      try {
+        const rpcRes = await fetch("https://cloudflare-eth.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "eth_getBlockByNumber",
+            params: [hex, false],
+            id: 1,
+          }),
+        });
+        if (!rpcRes.ok) {
+          console.debug(`RPC fallback returned non-OK for block ${num}`);
+          return null;
+        }
+        const rpcJson = await rpcRes.json();
+        const rr = rpcJson && rpcJson.result;
+        if (!rr) {
+          console.debug(`RPC fallback returned invalid block for ${num}`);
+          return null;
+        }
+        return {
+          number: num.toString(),
+          hash: rr.hash || hex,
+          timestamp:
+            parseTimestampSeconds(rr.timestamp) ??
+            Math.floor(Date.now() / 1000),
+        };
+      } catch (e) {
+        console.debug(`RPC fallback error for block ${num}:`, e);
+        return null;
+      }
     }
+
     const r = data && data.result;
-    if (!r) throw new Error("Invalid block result from Etherscan");
+    if (!r) {
+      console.debug(`Etherscan returned no block result for ${num}`);
+      return null;
+    }
     return {
       number: num.toString(),
       hash: r.hash || hex,
-      timestamp: tsFromHex(r.timestamp || undefined),
+      timestamp:
+        parseTimestampSeconds(r.timestamp) ?? Math.floor(Date.now() / 1000),
     };
   };
 
@@ -153,6 +198,10 @@ export const useBlockData = () => {
         if (lastSeenRef.current === null) {
           const block = await fetchBlockByNumber(latest);
           if (!mounted) return;
+          if (!block) {
+            // transient failure; try again on the next poll without logging
+            return;
+          }
           lastSeenRef.current = latest;
           setBlocks((prev) => [block, ...prev].slice(0, 15));
           return;
@@ -165,6 +214,10 @@ export const useBlockData = () => {
         try {
           const b = await fetchBlockByNumber(latest);
           if (!mounted) return;
+          if (!b) {
+            // transient failure; do not advance lastSeenRef so we'll retry
+            return;
+          }
           lastSeenRef.current = latest;
           setBlocks((prev) => {
             const combined = [b, ...prev];
@@ -183,7 +236,7 @@ export const useBlockData = () => {
           console.error("block fetch failed for latest", latest, err);
         }
       } catch (error) {
-        console.error("poll error", error);
+        console.debug("poll error", error);
         return; // keep feed unchanged
       }
     };
