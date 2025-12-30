@@ -7,120 +7,156 @@ export interface BlockInfo {
 }
 
 const ETHERSCAN_BASE = "https://api.etherscan.io/v2/api";
-const POLL_INTERVAL_MS = 10000; // 10 seconds
+const POLL_INTERVAL_MS = 2000; // 2 seconds
 const MAX_MISSED_TO_FETCH = 50; // safety cap to avoid spamming API
 
-const getEnvApiKey = (): string | undefined => {
-  try {
-    const proc = (globalThis as any).process;
-    return (
-      (proc && proc.env && (proc.env.ETHERSCAN_API_KEY as string)) || undefined
-    );
-  } catch {
-    return undefined;
-  }
+const tsFromHex = (hex?: string) => {
+  if (!hex) return new Date().toLocaleTimeString([], { hour12: false });
+  const n = parseInt(hex, 16);
+  if (Number.isNaN(n))
+    return new Date().toLocaleTimeString([], { hour12: false });
+  return new Date(n * 1000).toLocaleTimeString([], { hour12: false });
 };
 
 export const useBlockData = () => {
   const [blocks, setBlocks] = useState<BlockInfo[]>([]);
   const lastSeenRef = useRef<number | null>(null);
-  const apiKey = getEnvApiKey();
+  const apiKey = getApiKeyFromEnv();
 
-  // Helper: convert hex timestamp to readable string
-  const tsFromHex = (hex?: string) => {
-    if (!hex) return new Date().toLocaleTimeString([], { hour12: false });
-    const ts = parseInt(hex, 16);
-    if (isNaN(ts)) return new Date().toLocaleTimeString([], { hour12: false });
-    return new Date(ts * 1000).toLocaleTimeString([], { hour12: false });
+  function getApiKeyFromEnv(): string | null {
+    const key = import.meta.env.VITE_ETHERSCAN_API_KEY;
+    console.log("Etherscan API Key:", key ? "FOUND" : "NOT FOUND");
+    return key ? key : null;
+  }
+
+  const parsePossibleBlock = (val: any): number | null => {
+    if (typeof val === "number" && Number.isFinite(val)) return Math.floor(val);
+    if (typeof val === "string") {
+      const s = val.trim();
+      if (s.startsWith("0x") || s.startsWith("0X")) {
+        const parsed = parseInt(s, 16);
+        return Number.isNaN(parsed) ? null : parsed;
+      }
+      const parsedDec = parseInt(s, 10);
+      return Number.isNaN(parsedDec) ? null : parsedDec;
+    }
+    return null;
   };
 
-  // Fetch latest block number via Etherscan proxy
   const fetchLatestBlockNumber = async (): Promise<number> => {
-    const keyParam = apiKey ? `&apikey=${apiKey}` : "";
-    const url = `${ETHERSCAN_BASE}?chainid=1&module=proxy&action=eth_blockNumber${keyParam}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Failed to fetch latest block number");
-    const data = await res.json();
-    const result = data && (data.result !== undefined ? data.result : null);
-
-    const parsePossibleBlock = (val: any): number | null => {
-      if (typeof val === "number" && Number.isFinite(val))
-        return Math.floor(val);
-      if (typeof val === "string") {
-        const s = val.trim();
-        if (s.startsWith("0x") || s.startsWith("0X")) {
-          const n = parseInt(s, 16);
-          return Number.isNaN(n) ? null : n;
-        }
-        // decimal string
-        const nDec = parseInt(s, 10);
-        return Number.isNaN(nDec) ? null : nDec;
+    // If we don't have an API key, use public RPC
+    if (!apiKey) {
+      const rpcRes = await fetch("https://cloudflare-eth.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "eth_blockNumber",
+          params: [],
+          id: 1,
+        }),
+      });
+      if (!rpcRes.ok) throw new Error("Failed RPC latest block");
+      const rpcJson = await rpcRes.json();
+      const parsed = parsePossibleBlock(rpcJson && rpcJson.result);
+      if (parsed === null) {
+        console.error("Invalid RPC latest block payload:", rpcJson);
+        throw new Error("Parsed NaN latest block from RPC");
       }
-      return null;
-    };
-
-    let num = parsePossibleBlock(result);
-
-    // If Etherscan didn't return a usable value, fall back to public RPC
-    if (num === null) {
-      try {
-        const rpcRes = await fetch("https://cloudflare-eth.com", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            method: "eth_blockNumber",
-            params: [],
-            id: 1,
-          }),
-        });
-        if (rpcRes.ok) {
-          const rpcData = await rpcRes.json();
-          const rpcHex = rpcData && rpcData.result;
-          const parsed = parsePossibleBlock(rpcHex);
-          if (parsed !== null) num = parsed;
-        }
-      } catch (e) {
-        console.error("cloudflare fallback failed", e);
-      }
+      return parsed;
     }
 
-    if (num === null) {
-      console.error("invalid latest block payload", data);
+    // Use Etherscan GET endpoint
+    const url = `${ETHERSCAN_BASE}?chainid=1&module=proxy&action=eth_blockNumber&apikey=${apiKey}`;
+    const res = await fetch(url);
+    if (!res.ok)
+      throw new Error("Failed to fetch latest block number from Etherscan");
+    const data = await res.json();
+
+    // If Etherscan returns an error payload, fall back to RPC
+    if (data && data.status === "0") {
+      console.warn(
+        "Etherscan error, falling back to RPC:",
+        data.message,
+        data.result
+      );
+      const rpcRes = await fetch("https://cloudflare-eth.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "eth_blockNumber",
+          params: [],
+          id: 1,
+        }),
+      });
+      if (!rpcRes.ok) throw new Error("Failed RPC latest block fallback");
+      const rpcJson = await rpcRes.json();
+      const parsed = parsePossibleBlock(rpcJson && rpcJson.result);
+      if (parsed === null) {
+        console.error("Invalid RPC latest block payload (fallback):", rpcJson);
+        throw new Error("Parsed NaN latest block from RPC fallback");
+      }
+      return parsed;
+    }
+
+    const parsed = parsePossibleBlock(data && data.result);
+    if (parsed === null) {
+      console.error("invalid latest block payload from Etherscan:", data);
       throw new Error("Parsed NaN latest block");
     }
-
-    return num;
+    return parsed;
   };
 
-  // Fetch block details by number using Etherscan
   const fetchBlockByNumber = async (num: number): Promise<BlockInfo> => {
     const hex = `0x${num.toString(16)}`;
-    const keyParam = apiKey ? `&apikey=${apiKey}` : "";
-    const url = `${ETHERSCAN_BASE}?chainid=1&module=proxy&action=eth_getBlockByNumber&tag=${hex}&boolean=false${keyParam}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch block ${num}`);
-    const data = await res.json();
-    const result = data.result || data.result;
-    if (!result) throw new Error("Invalid block result");
+    if (!apiKey) {
+      // RPC call
+      const rpcRes = await fetch("https://cloudflare-eth.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "eth_getBlockByNumber",
+          params: [hex, false],
+          id: 1,
+        }),
+      });
+      if (!rpcRes.ok) throw new Error(`Failed to fetch block ${num} via RPC`);
+      const rpcJson = await rpcRes.json();
+      const r = rpcJson && rpcJson.result;
+      if (!r) throw new Error("Invalid RPC block result");
+      return {
+        number: num.toString(),
+        hash: r.hash || hex,
+        timestamp: tsFromHex(r.timestamp || undefined),
+      };
+    }
 
+    const url = `${ETHERSCAN_BASE}?chainid=1&module=proxy&action=eth_getBlockByNumber&tag=${hex}&boolean=false&apikey=${apiKey}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch block ${num} from Etherscan`);
+    const data = await res.json();
+    if (data && data.status === "0") {
+      throw new Error(`Etherscan block fetch failed: ${data.message}`);
+    }
+    const r = data && data.result;
+    if (!r) throw new Error("Invalid block result from Etherscan");
     return {
       number: num.toString(),
-      hash: result.hash || hex,
-      timestamp: tsFromHex(result.timestamp || undefined),
+      hash: r.hash || hex,
+      timestamp: tsFromHex(r.timestamp || undefined),
     };
   };
 
   useEffect(() => {
     let mounted = true;
 
-    // No simulation: if we can't retrieve blocks, we will not modify the feed.
-
     const poll = async () => {
       try {
         const latest = await fetchLatestBlockNumber();
 
-        // If we have no last seen, fetch the latest block details and set
+        // first run: fetch single latest block
         if (lastSeenRef.current === null) {
           const block = await fetchBlockByNumber(latest);
           if (!mounted) return;
@@ -129,44 +165,34 @@ export const useBlockData = () => {
           return;
         }
 
-        const lastSeen = lastSeenRef.current;
+        const lastSeen = lastSeenRef.current as number;
         if (latest <= lastSeen) return; // nothing new
 
-        // Determine range of missed blocks
         const from = lastSeen + 1;
         const to = latest;
         const count = to - from + 1;
-
-        // Cap to avoid spamming API
         const safeCount = Math.min(count, MAX_MISSED_TO_FETCH);
         const startToFetch = to - safeCount + 1;
 
-        const nums: number[] = [];
-        for (let n = startToFetch; n <= to; n++) nums.push(n);
-
-        // Fetch sequentially to preserve order (could parallelize but keep simple)
         const fetched: BlockInfo[] = [];
-        for (const n of nums) {
+        for (let n = startToFetch; n <= to; n++) {
           try {
             const b = await fetchBlockByNumber(n);
             fetched.push(b);
           } catch (err) {
-            // skip failed block but continue
             console.error("block fetch failed", n, err);
           }
         }
 
         if (!mounted) return;
         if (fetched.length === 0) {
-          // nothing fetched; do not update lastSeen so we retry next poll
+          // nothing fetched; do not advance lastSeen so we retry next poll
           return;
         }
 
-        // newest first
         const newestFirst = fetched.reverse();
         lastSeenRef.current = latest;
         setBlocks((prev) => {
-          // prepend fetched (newest first) but ensure uniqueness by number
           const combined = [...newestFirst, ...prev];
           const seen = new Set<string>();
           const dedup: BlockInfo[] = [];
@@ -180,16 +206,13 @@ export const useBlockData = () => {
           return dedup;
         });
       } catch (error) {
-        // On any API error, do not simulate — keep the feed unchanged and retry later
         console.error("poll error", error);
-        return;
+        return; // keep feed unchanged
       }
     };
 
-    // run immediately then every POLL_INTERVAL_MS
     poll();
     const id = setInterval(poll, POLL_INTERVAL_MS);
-
     return () => {
       mounted = false;
       clearInterval(id);
