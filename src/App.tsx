@@ -1,17 +1,13 @@
+import { useState } from "react";
 import { ScrambleText } from "./components/ScrambleText";
 import { BlockFeed } from "./components/BlockFeed";
 
 function App() {
+  const [isAboutHovered, setIsAboutHovered] = useState(false);
   const greetings = ["Hey", "안녕", "おはよ"];
 
   const randomGreeting =
     greetings[Math.floor(Math.random() * greetings.length)];
-
-  const links = [
-    { label: "Short Bio", href: "#bio" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
-  ];
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
@@ -38,34 +34,52 @@ function App() {
 
         <nav>
           <ul>
-            {links.map((link, index) => (
-              <li key={link.label}>
-                <a href={link.href}>
-                  <ScrambleText
-                    text={`[ ${link.label.toUpperCase()} ]`}
-                    speed={100}
-                    delay={2500 + index * 400}
-                  />
-                </a>
-              </li>
-            ))}
+            <li
+              onMouseEnter={() => setIsAboutHovered(true)}
+              onMouseLeave={() => setIsAboutHovered(false)}
+              style={{
+                cursor: "pointer",
+                color: isAboutHovered ? "#fff" : "#888",
+                transition: "color 0.25s",
+                fontWeight: 500,
+                display: "inline-block"
+              }}
+            >
+              <ScrambleText
+                text="[ ABOUT ME ]"
+                speed={100}
+                delay={2000}
+              />
+            </li>
           </ul>
         </nav>
 
-        <main style={{ maxWidth: "600px", marginTop: "2rem" }}>
-          <p style={{ lineHeight: "1.6", color: "#888" }}>
-            <ScrambleText
-              text="Welcome to my digital playground."
-              speed={120}
-              delay={4000}
-            />
-            <br />
-            <span
-              style={{ fontSize: "0.9em", display: "block", marginTop: "1rem" }}
-            >
-              This site is a work in progress. Minimalist by design.
-            </span>
-          </p>
+        <main style={{ maxWidth: "600px", marginTop: "2rem", minHeight: "200px" }}>
+          {!isAboutHovered ? (
+            <p style={{ lineHeight: "1.6", color: "#888" }}>
+              <ScrambleText
+                key="welcome"
+                text="Welcome to my digital playground."
+                speed={120}
+                delay={3000}
+              />
+              <br />
+              <span
+                style={{ fontSize: "0.9em", display: "block", marginTop: "1rem" }}
+              >
+                This site is a work in progress. Minimalist by design.
+              </span>
+            </p>
+          ) : (
+            <div style={{ lineHeight: "1.6", color: "#eee" }}>
+              <ScrambleText
+                key="about-text"
+                text="I'm a Software Engineering student at the University of Auckland with a passion for blockchain technology and decentralized systems. I enjoy building minimalist, efficient tools and exploring the frontiers of Web3. When I'm not coding, I'm usually researching the latest developments in Ethereum and L2 scaling solutions."
+                speed={20}
+                delay={0}
+              />
+            </div>
+          )}
         </main>
 
         <footer
