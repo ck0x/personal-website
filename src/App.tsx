@@ -62,6 +62,24 @@ function App() {
               <ScrambleText text="[ ABOUT ME ]" speed={100} delay={2000} />
             </li>
             <li
+              onMouseEnter={() => handleTabHover("projects")}
+              onMouseLeave={() => setHoveredTab(null)}
+              onClick={() =>
+                setOpenTab(openTab === "projects" ? null : "projects")
+              }
+              style={{
+                cursor: "pointer",
+                color:
+                  hoveredTab === "projects" || openTab === "projects"
+                    ? "#fff"
+                    : "#888",
+                transition: "color 0.25s",
+                fontWeight: 500,
+              }}
+            >
+              <ScrambleText text="[ PROJECTS ]" speed={100} delay={2100} />
+            </li>
+            <li
               onMouseEnter={() => handleTabHover("contact")}
               onMouseLeave={() => setHoveredTab(null)}
               onClick={() =>
@@ -159,6 +177,71 @@ function App() {
                     revealFactor={0.02}
                   />
                 </>
+              ) : openTab === "projects" ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.5rem",
+                  }}
+                >
+                  <p style={{ color: "#888", marginBottom: "0.5rem" }}>
+                    <ScrambleText text="Selected works:" speed={30} />
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.8rem",
+                    }}
+                  >
+                    <a
+                      href="https://www.sagio.io/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <ScrambleText text="> SAGIO" speed={50} />
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
+                        [sagio.io]
+                      </span>
+                    </a>
+                    <a
+                      href="https://www.rallihub.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <ScrambleText text="> RALLIHUB" speed={50} />
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
+                        [rallihub.com]
+                      </span>
+                    </a>
+                    <a
+                      href="https://www.web3uoa.nz/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <ScrambleText text="> WEB3UOA" speed={50} />
+                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
+                        [web3uoa.nz]
+                      </span>
+                    </a>
+                  </div>
+                </div>
               ) : openTab === "contact" ? (
                 <div
                   style={{
@@ -168,10 +251,7 @@ function App() {
                   }}
                 >
                   <p style={{ color: "#888", marginBottom: "0.5rem" }}>
-                    <ScrambleText
-                      text="Connection established. Reach out via:"
-                      speed={30}
-                    />
+                    <ScrambleText text="Reach out via:" speed={30} />
                   </p>
                   <div
                     style={{
