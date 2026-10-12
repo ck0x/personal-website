@@ -1,318 +1,148 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, type KeyboardEvent } from "react";
 import { ScrambleText } from "./components/ScrambleText";
 import { BlockFeed } from "./components/BlockFeed";
 
+type Tab = "about" | "projects" | "contact";
+
+interface LinkItem {
+  name: string;
+  href: string;
+  label: string;
+}
+
+const TABS: Tab[] = ["about", "projects", "contact"];
+
+const GREETINGS = ["Hey", "안녕", "おはよ"];
+
+const PROJECTS: LinkItem[] = [
+  { name: "Sagio", href: "https://www.sagio.io/", label: "sagio.io" },
+  { name: "Rallihub", href: "https://www.rallihub.com/", label: "rallihub.com" },
+  { name: "Web3UoA", href: "https://www.web3uoa.nz/", label: "web3uoa.nz" },
+];
+
+const CONTACTS: LinkItem[] = [
+  { name: "GitHub", href: "https://github.com/ck0x", label: "github.com/ck0x" },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/chris-kwon-16aa19172/",
+    label: "linkedin.com",
+  },
+];
+
+const LinkList = ({ items }: { items: LinkItem[] }) => (
+  <ul className="link-list">
+    {items.map((item) => (
+      <li key={item.href}>
+        <a
+          className="link-row"
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <ScrambleText className="link-name" text={item.name} speed={50} />
+          <span className="link-leader" aria-hidden="true" />
+          <span className="link-meta">{item.label}</span>
+          <span className="link-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+);
+
 function App() {
-  const [openTab, setOpenTab] = useState<string | null>(null);
-  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-  const greetings = ["Hey", "안녕", "おはよ"];
+  const [activeTab, setActiveTab] = useState<Tab>("about");
+  const [greeting] = useState(
+    () => GREETINGS[Math.floor(Math.random() * GREETINGS.length)]
+  );
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const randomGreeting =
-    greetings[Math.floor(Math.random() * greetings.length)];
-
-  const [dots, setDots] = useState("...");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prev) => (prev === "." ? ".." : prev === ".." ? "..." : "."));
-    }, 500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleTabHover = (tab: string) => {
-    setHoveredTab(tab);
-  };
-
-  const closeTab = () => {
-    setOpenTab(null);
+  // Arrow keys move between tabs, per the WAI-ARIA tabs pattern
+  const handleTabKeyDown = (e: KeyboardEvent, index: number) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const step = e.key === "ArrowRight" ? 1 : -1;
+    const next = (index + step + TABS.length) % TABS.length;
+    setActiveTab(TABS[next]);
+    tabRefs.current[next]?.focus();
   };
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <>
       <BlockFeed />
 
       <div className="container">
         <header>
-          <ScrambleText as="h1" text={randomGreeting} speed={50} delay={0} />
           <ScrambleText
-            as="div"
-            text="Software Engineering Student at UoA // Blockchain Developer"
-            speed={80}
-            delay={1200}
-            className="subtitle"
+            as="h1"
+            text={`${greeting}, I'm Chris.`}
+            speed={50}
           />
         </header>
 
-        <nav>
-          <ul style={{ display: "flex", gap: "2rem" }}>
-            <li
-              onMouseEnter={() => handleTabHover("about")}
-              onMouseLeave={() => setHoveredTab(null)}
-              onClick={() => setOpenTab(openTab === "about" ? null : "about")}
-              style={{
-                cursor: "pointer",
-                color:
-                  hoveredTab === "about" || openTab === "about"
-                    ? "#fff"
-                    : "#888",
-                transition: "color 0.25s",
-                fontWeight: 500,
+        <nav className="nav" role="tablist" aria-label="Sections">
+          {TABS.map((tab, index) => (
+            <button
+              key={tab}
+              ref={(el) => {
+                tabRefs.current[index] = el;
               }}
+              id={`tab-${tab}`}
+              className="tab"
+              role="tab"
+              aria-selected={activeTab === tab}
+              aria-controls="tab-panel"
+              tabIndex={activeTab === tab ? 0 : -1}
+              onClick={() => setActiveTab(tab)}
+              onKeyDown={(e) => handleTabKeyDown(e, index)}
             >
-              <ScrambleText text="[ ABOUT ME ]" speed={100} delay={2000} />
-            </li>
-            <li
-              onMouseEnter={() => handleTabHover("projects")}
-              onMouseLeave={() => setHoveredTab(null)}
-              onClick={() =>
-                setOpenTab(openTab === "projects" ? null : "projects")
-              }
-              style={{
-                cursor: "pointer",
-                color:
-                  hoveredTab === "projects" || openTab === "projects"
-                    ? "#fff"
-                    : "#888",
-                transition: "color 0.25s",
-                fontWeight: 500,
-              }}
-            >
-              <ScrambleText text="[ PROJECTS ]" speed={100} delay={2100} />
-            </li>
-            <li
-              onMouseEnter={() => handleTabHover("contact")}
-              onMouseLeave={() => setHoveredTab(null)}
-              onClick={() =>
-                setOpenTab(openTab === "contact" ? null : "contact")
-              }
-              style={{
-                cursor: "pointer",
-                color:
-                  hoveredTab === "contact" || openTab === "contact"
-                    ? "#fff"
-                    : "#888",
-                transition: "color 0.25s",
-                fontWeight: 500,
-              }}
-            >
-              <ScrambleText text="[ CONTACTS ]" speed={100} delay={2200} />
-            </li>
-          </ul>
+              <ScrambleText text={tab} speed={60} delay={400 + index * 100} />
+            </button>
+          ))}
         </nav>
 
-        <main className="main-content">
-          {openTab === null ? (
-            <p style={{ lineHeight: "1.6", color: "#888" }}>
-              <ScrambleText
-                key="welcome"
-                text="Welcome."
-                speed={120}
-                delay={3000}
-              />
-              <br />
-              <span
-                style={{
-                  fontSize: "0.9em",
-                  display: "block",
-                  marginTop: "1rem",
-                }}
-              >
-                ck0x is a work in progress ⟠{dots}
-              </span>
-            </p>
-          ) : (
-            <div
-              style={{
-                lineHeight: "1.6",
-                color: "#eee",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-                position: "relative",
-                paddingTop: "2rem",
-              }}
-            >
-              <button
-                onClick={closeTab}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  background: "none",
-                  border: "none",
-                  color: "#555",
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  fontSize: "0.8rem",
-                  padding: "4px",
-                  transition: "color 0.2s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
-              >
-                [ CLOSE X ]
-              </button>
-
-              {openTab === "about" ? (
-                <>
-                  <ScrambleText
-                    key="about-1"
-                    text="I'm Chris Kwon, a passionate Software Engineering student at the University of Auckland."
-                    speed={20}
-                    delay={0}
-                    revealFactor={0.02}
-                  />
-                  <ScrambleText
-                    key="about-2"
-                    text="My focus is on blockchain development, where I build decentralised applications and explore Web3 innovations."
-                    speed={20}
-                    delay={100}
-                    revealFactor={0.02}
-                  />
-                  <ScrambleText
-                    key="about-3"
-                    text="I'm constantly learning about emerging technologies in the crypto space."
-                    speed={20}
-                    delay={200}
-                    revealFactor={0.02}
-                  />
-                </>
-              ) : openTab === "projects" ? (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.5rem",
-                  }}
-                >
-                  <p style={{ color: "#888", marginBottom: "0.5rem" }}>
-                    <ScrambleText text="Selected works:" speed={30} />
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.8rem",
-                    }}
-                  >
-                    <a
-                      href="https://www.sagio.io/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <ScrambleText text="> SAGIO" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
-                        [sagio.io]
-                      </span>
-                    </a>
-                    <a
-                      href="https://www.rallihub.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <ScrambleText text="> RALLIHUB" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
-                        [rallihub.com]
-                      </span>
-                    </a>
-                    <a
-                      href="https://www.web3uoa.nz/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <ScrambleText text="> WEB3UOA" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
-                        [web3uoa.nz]
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              ) : openTab === "contact" ? (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.5rem",
-                  }}
-                >
-                  <p style={{ color: "#888", marginBottom: "0.5rem" }}>
-                    <ScrambleText text="Reach out via:" speed={30} />
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.8rem",
-                    }}
-                  >
-                    <a
-                      href="https://github.com/ck0x"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <ScrambleText text="> GITHUB" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
-                        [github.com/ck0x]
-                      </span>
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/chris-kwon-16aa19172/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <ScrambleText text="> LINKEDIN" speed={50} />
-                      <span style={{ fontSize: "0.7rem", color: "#444" }}>
-                        [linkedin.com/in/chris-kwon-16aa19172]
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          )}
+        <main
+          className="main-content"
+          id="tab-panel"
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTab}`}
+        >
+          <div key={activeTab} className="panel">
+            {activeTab === "about" ? (
+              <>
+                <p>
+                  I'm <strong>Chris Kwon</strong>, a software engineering
+                  student at the University of Auckland.
+                </p>
+                <p>
+                  I focus on blockchain development — building decentralised
+                  applications and exploring what's next in Web3.
+                </p>
+                <p>Always learning about what's emerging in the crypto space.</p>
+              </>
+            ) : activeTab === "projects" ? (
+              <>
+                <p className="label">Selected work</p>
+                <LinkList items={PROJECTS} />
+              </>
+            ) : (
+              <>
+                <p className="label">Reach out</p>
+                <LinkList items={CONTACTS} />
+              </>
+            )}
+          </div>
         </main>
 
-        <footer
-          style={{
-            marginTop: "auto",
-            paddingTop: "4rem",
-            fontSize: "0.8rem",
-            color: "#444",
-          }}
-        >
+        <footer className="footer">
           <ScrambleText
-            text="© 2025 // SYSTEM READY"
-            speed={150}
-            delay={6000}
+            text={`© ${new Date().getFullYear()} · ck0x`}
+            speed={60}
+            delay={900}
           />
         </footer>
       </div>
-    </div>
+    </>
   );
 }
 

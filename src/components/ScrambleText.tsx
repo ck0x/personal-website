@@ -9,25 +9,27 @@ interface ScrambleTextProps {
   revealFactor?: number;
   className?: string;
   style?: React.CSSProperties;
-  onClick?: () => void;
 }
 
-export const ScrambleText = ({ 
-  text, 
-  as: Component = 'span', 
-  speed = 40, 
+export const ScrambleText = ({
+  text,
+  as: Component = 'span',
+  speed = 40,
   delay = 0,
   revealFactor = 0.1,
   className = '',
   style,
-  onClick
 }: ScrambleTextProps) => {
   const displayText = useScrambleText(text, speed, delay, revealFactor);
 
   return (
-    <Component className={className} style={style} onClick={onClick}>
-      {displayText}
+    <Component className={className} style={style}>
+      {/* The invisible final text reserves layout; screen readers get the real text */}
+      <span className="scramble" aria-hidden="true">
+        <span className="scramble-ghost">{text}</span>
+        <span>{displayText}</span>
+      </span>
+      <span className="sr-only">{text}</span>
     </Component>
   );
 };
-

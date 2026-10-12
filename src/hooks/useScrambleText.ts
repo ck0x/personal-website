@@ -3,6 +3,10 @@ import { useState, useEffect, useRef } from "react";
 const CHARS = "!<>-_\\/[]{}—=+*^?#________";
 const CHARS_LEN = CHARS.length;
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export const useScrambleText = (
   text: string,
   speed: number = 40,
@@ -15,8 +19,11 @@ export const useScrambleText = (
   const queue = useRef<
     { from: string; to: string; start: number; end: number; char: string }[]
   >([]);
+  const reducedMotion = prefersReducedMotion();
 
   useEffect(() => {
+    if (reducedMotion) return;
+
     let timeout: ReturnType<typeof setTimeout>;
 
     const setupQueue = () => {
@@ -53,7 +60,8 @@ export const useScrambleText = (
       const q = queue.current;
 
       for (let i = 0; i < q.length; i++) {
-        let { from, to, start, end, char } = q[i];
+        const { from, to, start, end } = q[i];
+        let { char } = q[i];
 
         if (frame.current >= end) {
           complete++;
@@ -102,7 +110,7 @@ export const useScrambleText = (
       clearTimeout(timeout);
       if (frameRequest.current) cancelAnimationFrame(frameRequest.current);
     };
-  }, [text, speed, delay, revealFactor]);
+  }, [text, speed, delay, revealFactor, reducedMotion]);
 
-  return displayText;
+  return reducedMotion ? text : displayText;
 };
